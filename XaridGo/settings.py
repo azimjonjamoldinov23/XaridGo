@@ -145,9 +145,13 @@ ALLOWED_HOSTS = ['*']
 # 2. MIDDLEWARE ichiga whitenoise qo'shing (SecurityMiddleware'dan keyin)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # SHU QATORNI QO'SHING
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # ... qolganlari o'zgarmaydi ...
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 # 3. Faylning eng pastki qismiga static sozlamalarini qo'shing
