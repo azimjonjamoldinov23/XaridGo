@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XaridGo — Internet Do'kon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f5f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        
+        .navbar-custom {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+        }
+        .search-box {
+            background-color: #f4f5f7;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 8px 16px;
+        }
+        .search-box:focus-within {
+            background-color: #fff;
+            border-color: #7000ff;
+            box-shadow: 0 0 0 3px rgba(112, 0, 255, 0.1);
+        }
+        
+        .promo-banner {
+            background: linear-gradient(90deg, #7000ff 0%, #9c33ff 100%);
+            border-radius: 20px;
+            color: white;
+            padding: 40px;
+            margin-top: 20px;
+        }
+        .btn-banner {
+            background-color: #ffffff;
+            color: #7000ff;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px 24px;
+            border: none;
+        }
+        .btn-banner:hover {
+            background-color: #f0f0f0;
+            color: #5b00cc;
+        }
+
+        .category-pill {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 500;
+            color: #1f2026;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .category-pill:hover {
+            background-color: #7000ff;
+            color: white;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #eee;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .btn-cart {
+            background-color: #7000ff;
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            border: none;
+            padding: 10px;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+        .btn-cart:hover {
+            background-color: #5b00cc;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Yuqori Navigatsiya -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4 text-dark" href="{% url 'index' %}">
+                <span style="color: #7000ff;">🛒</span> XaridGo
+            </a>
+            
+            <div class="d-flex align-items-center gap-2">
+                <!-- Savat sahifasiga o'tish tugmasi -->
+          <a href="{% url 'cart_view' %}" class="btn btn-light rounded-pill px-3 py-2 fw-medium border d-flex align-items-center" style="border-color: #7000ff !important; color: #7000ff; text-decoration: none;">
+    <i class="fa-solid fa-cart-shopping me-2"></i> Savat
+</a>
+                    <i class="fa-solid fa-cart-shopping me-2"></i> Savat
+                </a>
+
+                {% if request.user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle rounded-pill px-3 py-2 fw-medium border" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-color: #7000ff !important; color: #7000ff;">
+                            <i class="fa-regular fa-user me-1"></i> {{ request.user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-4">
+                            <li><span class="dropdown-item-text text-muted small">Xush kelibsiz!</span></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-user me-2"></i>Profil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger"><i class="fa-solid fa-right-from-bracket me-2"></i>Chiqish</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn rounded-pill px-4 py-2 fw-medium text-white" style="background-color: #7000ff;">
+                        Kirish
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-3">
+        <!-- Qidirish qatori -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <div class="d-flex search-box align-items-center">
+                  <form action="{% url 'search' %}" method="GET" style="position: relative; width: 100%; max-width: 600px; margin: 0 auto 20px auto;">
+    <input 
+        type="text" 
+        name="q" 
+        placeholder="Mahsulotlarni qidirish..." 
+        value="{{ query|default:'' }}"
+        style="width: 100%; padding: 12px 45px 12px 15px; border: 1px solid #d0d0d0; border-radius: 10px; font-size: 15px;"
+        required
+    >
+    <button type="submit" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px;">
+        🔍
+    </button>
+</form>
+                    <i class="fa-solid fa-magnifying-glass text-muted ms-2"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asosiy Banner -->
+        <div class="promo-banner shadow-sm mb-5">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h1 class="fw-bold display-6 mb-3">Katta Chegirmalar Haftaligi!</h1>
+                    <p class="lead mb-4" style="font-size: 16px; opacity: 0.9;">Sevimli mahsulotlaringizni hamyonbop narxlarda xarid qiling.</p>
+                    <button class="btn btn-banner">Batafsil</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kategoriyalar qatori -->
+        <div class="d-flex gap-3 mb-5 overflow-auto pb-2">
+            <a href="{% url 'index' %}" class="category-pill">🔥 Barchasi</a>
+            <a href="{% url 'index' %}?category=ichimliklar" class="category-pill">🥤 Ichimliklar</a>
+            <a href="{% url 'index' %}?category=elektronika" class="category-pill">📱 Elektronika</a>
+            <a href="{% url 'index' %}?category=kiyim" class="category-pill">👕 Kiyim-kechak</a>
+            <a href="{% url 'index' %}?category=oziq-ovqat" class="category-pill">🍎 Oziq-ovqat</a>
+        </div>
+
+        <!-- Mahsulotlar ro'yxati -->
+        <h3 class="fw-bold mb-4" style="color: #1f2026;">Ommabop mahsulotlar</h3>
+        
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="product-card p-3 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <!-- Mahsulot rasmi va nomiga bosganda batafsil sahifaga o'tadi -->
+                        <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">
+                            <div class="bg-light rounded-4 p-3 text-center mb-3" style="height: 180px;">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid h-100" style="object-fit: contain;">
+                                {% else %}
+                                    <div class="text-muted small d-flex align-items-center justify-content-center h-100">Rasm yo'q</div>
+                                {% endif %}
+                            </div>
+                            <h6 class="fw-semibold text-dark mb-1">{{ product.name }}</h6>
+                            <p class="text-muted small mb-2">{{ product.description|truncatechars:35 }}</p>
+                        </a>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-5 mb-3 text-dark">{{ product.price }} so'm</div>
+                        <!-- Savatga qo'shish tugmasi real add_to_cart URL ga ulandi -->
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-cart" onclick="event.stopPropagation();">
+                            Savatga qo'shish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h5 class="text-muted">Hozircha mahsulotlar mavjud emas.</h5>
+                <p class="small text-muted">Admin panelga kirib mahsulot qo'shing.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
