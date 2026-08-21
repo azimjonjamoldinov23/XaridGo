@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qaytarishlar | XaridGo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #6813d8;
+            --purple-dark: #4d08b7;
+            --purple-light: #f0eaff;
+            --purple-soft: #f8f5ff;
+            --pink: #b000df;
+            --text: #282430;
+            --muted: #77717e;
+            --border: #e9e5ee;
+            --bg: #f7f7fa;
+            --white: #ffffff;
+            --green: #15803d;
+            --orange: #a56b00;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* HEADER */
+        .header {
+            height: 170px;
+            background: linear-gradient(
+                110deg,
+                #4b08b9 0%,
+                #7500e5 45%,
+                #b400d9 100%
+            );
+            border-radius: 0 0 25px 25px;
+            color: white;
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 28px;
+            top: 55px;
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            text-decoration: none;
+            font-size: 28px;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .header-content p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* MAIN */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        /* INFO CARD */
+        .info-card {
+            background: linear-gradient(135deg, #f0eaff, #faf7ff);
+            border-radius: 22px;
+            padding: 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .info-icon {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+
+            border-radius: 18px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 32px;
+        }
+
+        .info-text h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .info-text p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* TITLE */
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        /* RETURN CARDS */
+        .return-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .return-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+
+            box-shadow: 0 5px 18px rgba(50, 20, 80, 0.05);
+        }
+
+        .return-top {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .return-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .return-date {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: #fff5df;
+            color: var(--orange);
+        }
+
+        .status.completed {
+            background: #eaf8ef;
+            color: var(--green);
+        }
+
+        .return-body {
+            padding: 22px 25px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .product-icon {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+
+            border-radius: 16px;
+            background: #f2eff5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+        .return-product {
+            flex: 1;
+        }
+
+        .return-product h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .return-product p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .return-arrow {
+            color: var(--purple);
+            font-size: 25px;
+            text-decoration: none;
+        }
+
+        /* EMPTY */
+        .empty-box {
+            min-height: 180px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            padding: 25px;
+
+            box-shadow: 0 5px 18px rgba(50, 20, 80, 0.04);
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 20px;
+            background: var(--purple-light);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .empty-box h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .empty-box p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* HOW IT WORKS */
+        .steps-section {
+            margin-top: 40px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .step-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 12px;
+            background: var(--purple-light);
+            color: var(--purple);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .step-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .step-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* BUTTON */
+        .action-box {
+            margin-top: 35px;
+        }
+
+        .return-btn {
+            width: 100%;
+            min-height: 60px;
+
+            border: none;
+            border-radius: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+            color: white;
+
+            font-size: 17px;
+            font-weight: 600;
+
+            background: linear-gradient(
+                90deg,
+                #4e08ba,
+                #7500df
+            );
+
+            box-shadow: 0 8px 20px rgba(95, 0, 210, 0.22);
+
+            transition: 0.2s;
+        }
+
+        .return-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* MOBILE */
+        @media (max-width: 650px) {
+            .header {
+                height: 150px;
+            }
+
+            .back-btn {
+                left: 15px;
+                top: 48px;
+
+                width: 48px;
+                height: 48px;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .header-content p {
+                font-size: 13px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 14px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+
+            .info-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 26px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .return-top,
+            .return-body {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .section-title {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <a href="/" class="back-btn">←</a>
+
+        <div class="header-content">
+            <h1>Qaytarishlar</h1>
+            <p>Qaytarilgan mahsulotlaringizni boshqaring</p>
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- INFO -->
+        <section class="info-card">
+
+            <div class="info-icon">↩️</div>
+
+            <div class="info-text">
+                <h2>Mahsulotni qaytarish</h2>
+                <p>
+                    Buyurtmangizdagi mahsulotni qaytarish uchun
+                    qaytarish so'rovini yuborishingiz mumkin.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- RETURN LIST -->
+        <h2 class="section-title">Mening qaytarishlarim</h2>
+
+        <!--
+        Agar Django'da returns ma'lumotlari bo'lsa,
+        shu qismni for loop bilan ishlatishingiz mumkin.
+        -->
+
+        {% if returns %}
+
+            <div class="return-list">
+
+                {% for return_item in returns %}
+
+                <div class="return-card">
+
+                    <div class="return-top">
+
+                        <div>
+                            <div class="return-number">
+                                Qaytarish #{{ return_item.id }}
+                            </div>
+
+                            <div class="return-date">
+                                {{ return_item.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+
+                        <div class="status pending">
+                            {{ return_item.status }}
+                        </div>
+
+                    </div>
+
+                    <div class="return-body">
+
+                        <div class="product-icon">📦</div>
+
+                        <div class="return-product">
+                            <h3>{{ return_item.product }}</h3>
+                            <p>Qaytarish so'rovi ma'lumotlari</p>
+                        </div>
+
+                        <a href="#" class="return-arrow">→</a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <!-- QAYTARISH BO'LMASA -->
+            <div class="empty-box">
+
+                <div class="empty-icon">↩️</div>
+
+                <h3>Qaytarishlar mavjud emas</h3>
+
+                <p>
+                    Siz hali hech qanday mahsulotni qaytarish uchun
+                    so'rov yubormagansiz.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- QANDAY ISHLAYDI -->
+        <section class="steps-section">
+
+            <h2 class="section-title">Qanday qaytariladi?</h2>
+
+            <div class="steps">
+
+                <div class="step-card">
+
+                    <div class="step-number">1</div>
+
+                    <h3>Mahsulotni tanlang</h3>
+
+                    <p>
+                        Buyurtmalaringizdan qaytarmoqchi bo'lgan
+                        mahsulotni tanlang.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">2</div>
+
+                    <h3>So'rov yuboring</h3>
+
+                    <p>
+                        Qaytarish sababini tanlab, so'rovingizni
+                        yuboring.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">3</div>
+
+                    <h3>Natijani kuting</h3>
+
+                    <p>
+                        So'rovingiz ko'rib chiqiladi va sizga
+                        natija haqida xabar beriladi.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BUTTON -->
+        <div class="action-box">
+
+            <a href="/buyurtmalar/" class="return-btn">
+                Buyurtmalarni ko'rish
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

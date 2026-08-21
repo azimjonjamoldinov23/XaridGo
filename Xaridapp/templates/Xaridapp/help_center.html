@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Yordam markazi | XaridGo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #6813d8;
+            --purple-dark: #4d08b7;
+            --purple-light: #f1ebff;
+            --purple-soft: #f8f5ff;
+            --pink: #b300df;
+            --text: #282430;
+            --muted: #77717e;
+            --border: #e9e5ee;
+            --bg: #f7f7fa;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* HEADER */
+        .header {
+            height: 175px;
+            background: linear-gradient(
+                110deg,
+                var(--purple-dark),
+                var(--purple),
+                var(--pink)
+            );
+            border-radius: 0 0 25px 25px;
+            color: white;
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 28px;
+            top: 55px;
+
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+
+            color: white;
+            text-decoration: none;
+            font-size: 30px;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .header-content p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        /* SEARCH */
+        .search-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+
+            padding: 8px 18px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            box-shadow: 0 5px 20px rgba(50, 20, 80, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .search-icon {
+            font-size: 22px;
+            color: var(--purple);
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 50px;
+
+            border: none;
+            outline: none;
+
+            font-size: 16px;
+            color: var(--text);
+            background: transparent;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        /* HELP CARDS */
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .help-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            padding: 25px;
+            text-decoration: none;
+            color: var(--text);
+
+            transition: 0.2s;
+
+            box-shadow: 0 4px 15px rgba(50, 20, 80, 0.04);
+        }
+
+        .help-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(90, 20, 190, 0.12);
+        }
+
+        .help-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--purple-light);
+            border-radius: 16px;
+
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .help-card h3 {
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .help-card p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* FAQ */
+        .faq-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+
+            margin-bottom: 35px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 22px 25px;
+
+            border: none;
+            background: white;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            cursor: pointer;
+            text-align: left;
+
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            display: none;
+
+            padding: 0 25px 22px;
+
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .plus {
+            color: var(--purple);
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        /* CONTACT */
+        .contact-box {
+            background: linear-gradient(
+                110deg,
+                #f0e9ff,
+                #faf7ff
+            );
+
+            border-radius: 22px;
+            padding: 30px;
+
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .contact-box p {
+            color: var(--muted);
+            margin-bottom: 22px;
+            font-size: 15px;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 220px;
+            height: 55px;
+
+            border-radius: 14px;
+            text-decoration: none;
+
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+
+            background: linear-gradient(
+                90deg,
+                #4e08ba,
+                #7500df
+            );
+
+            box-shadow: 0 7px 20px rgba(95, 0, 210, 0.22);
+        }
+
+        /* MOBILE */
+        @media (max-width: 650px) {
+
+            .header {
+                height: 150px;
+            }
+
+            .back-btn {
+                left: 15px;
+                top: 48px;
+
+                width: 48px;
+                height: 48px;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .header-content p {
+                font-size: 13px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 14px;
+            }
+
+            .help-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 21px;
+            }
+
+            .contact-box {
+                padding: 25px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <a href="/" class="back-btn">←</a>
+
+        <div class="header-content">
+            <h1>Yordam markazi</h1>
+            <p>Sizga qanday yordam bera olamiz?</p>
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- SEARCH -->
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Yordam bo'yicha qidirish..."
+            >
+        </div>
+
+
+        <!-- HELP CATEGORIES -->
+        <h2 class="section-title">Qanday yordam kerak?</h2>
+
+        <div class="help-grid">
+
+            <a href="/buyurtmalar/" class="help-card">
+                <div class="help-icon">🛍️</div>
+                <h3>Buyurtmalar</h3>
+                <p>
+                    Buyurtma berish, holatini kuzatish va bekor qilish.
+                </p>
+            </a>
+
+            <a href="/payment-methods/" class="help-card">
+                <div class="help-icon">💳</div>
+                <h3>To'lovlar</h3>
+                <p>
+                    To'lov usullari va to'lov bilan bog'liq savollar.
+                </p>
+            </a>
+
+            <a href="/returns/" class="help-card">
+                <div class="help-icon">↩️</div>
+                <h3>Qaytarish</h3>
+                <p>
+                    Mahsulotni qaytarish va pulni qaytarib olish.
+                </p>
+            </a>
+
+            <a href="/profile/" class="help-card">
+                <div class="help-icon">👤</div>
+                <h3>Profil</h3>
+                <p>
+                    Profil ma'lumotlari va akkaunt sozlamalari.
+                </p>
+            </a>
+
+        </div>
+
+
+        <!-- FAQ -->
+        <h2 class="section-title">Ko'p so'raladigan savollar</h2>
+
+        <div class="faq-box">
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Buyurtmam qayerdaligini qanday bilaman?
+                    <span class="plus">+</span>
+                </button>
+
+                <div class="faq-answer">
+                    Buyurtmalar bo'limiga kirib, buyurtmangizning
+                    hozirgi holatini ko'rishingiz mumkin.
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Buyurtmani qanday bekor qilaman?
+                    <span class="plus">+</span>
+                </button>
+
+                <div class="faq-answer">
+                    Agar buyurtma hali yuborilmagan bo'lsa,
+                    buyurtma sahifasi orqali uni bekor qilishingiz mumkin.
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    To'lov qanday amalga oshiriladi?
+                    <span class="plus">+</span>
+                </button>
+
+                <div class="faq-answer">
+                    XaridGo platformasida mavjud to'lov usullaridan
+                    birini tanlab, xavfsiz tarzda to'lov qilishingiz mumkin.
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Mahsulotni qanday qaytaraman?
+                    <span class="plus">+</span>
+                </button>
+
+                <div class="faq-answer">
+                    Qaytarish bo'limiga o'tib, qaytarish shartlari
+                    va tartibi bilan tanishishingiz mumkin.
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- CONTACT -->
+        <section class="contact-box">
+
+            <h2>Javobingizni topa olmadingizmi?</h2>
+
+            <p>
+                Bizning qo'llab-quvvatlash jamoamiz sizga yordam beradi.
+            </p>
+
+            <a href="https://t.me/jamoldinov4x" target="_blank" class="contact-btn">
+                Yordam xizmatiga yozish
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script>
+        const questions = document.querySelectorAll(".faq-question");
+
+        questions.forEach(question => {
+
+            question.addEventListener("click", function () {
+
+                const item = this.parentElement;
+
+                document.querySelectorAll(".faq-item").forEach(faq => {
+                    if (faq !== item) {
+                        faq.classList.remove("active");
+                        faq.querySelector(".plus").textContent = "+";
+                    }
+                });
+
+                item.classList.toggle("active");
+
+                const plus = this.querySelector(".plus");
+
+                if (item.classList.contains("active")) {
+                    plus.textContent = "−";
+                } else {
+                    plus.textContent = "+";
+                }
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>

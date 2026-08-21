@@ -1,0 +1,813 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buyurtmalarim — XaridGo</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f4f6;
+            color: #222;
+            padding-bottom: 80px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* HEADER */
+
+        .header {
+            height: 125px;
+            background: linear-gradient(
+                110deg,
+                #7000ff,
+                #8c00ff,
+                #bd2cff
+            );
+            color: white;
+            border-radius: 0 0 22px 22px;
+            padding: 20px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.16);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            font-size: 18px;
+
+            transition: .2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,.27);
+            transform: translateX(-3px);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 9px;
+            opacity: .85;
+        }
+
+        /* CONTENT */
+
+        .content {
+            max-width: 750px;
+            margin: auto;
+            padding: 15px;
+        }
+
+        /* ORDER CARD */
+
+        .order-card {
+            background: white;
+            border-radius: 17px;
+            margin-bottom: 13px;
+            overflow: hidden;
+            box-shadow: 0 2px 9px rgba(0,0,0,.06);
+            transition: .2s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,.09);
+        }
+
+        .order-top {
+            padding: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-number {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .order-date {
+            color: #999;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* STATUS */
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status.pending {
+            background: #fff4d8;
+            color: #b57900;
+        }
+
+        .status.paid {
+            background: #e6f8ec;
+            color: #16853b;
+        }
+
+        .status.processing {
+            background: #eee7ff;
+            color: #7000ff;
+        }
+
+        .status.shipping {
+            background: #e3f2fd;
+            color: #1688d8;
+        }
+
+        .status.delivered {
+            background: #e7f8ed;
+            color: #16853b;
+        }
+
+        .status.cancelled {
+            background: #ffe7e7;
+            color: #d62828;
+        }
+
+        /* ORDER BODY */
+
+        .order-body {
+            padding: 15px;
+        }
+
+        .product-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-image {
+            width: 62px;
+            height: 62px;
+            border-radius: 12px;
+            background: #f1f1f1;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-image i {
+            color: #aaa;
+            font-size: 22px;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 700;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-quantity {
+            color: #888;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .order-price {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* DIVIDER */
+
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 14px 0;
+        }
+
+        /* TOTAL */
+
+        .order-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .total-label {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .total-price {
+            color: #7000ff;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        /* BUTTONS */
+
+        .order-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .order-btn {
+            flex: 1;
+            height: 40px;
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .details-btn {
+            background: #f0e8ff;
+            color: #7000ff;
+        }
+
+        .pay-btn {
+            background: #7000ff;
+            color: white;
+        }
+
+        .order-btn:hover {
+            opacity: .85;
+            transform: translateY(-1px);
+        }
+
+        /* EMPTY */
+
+        .empty {
+            background: white;
+            border-radius: 18px;
+            padding: 60px 20px;
+            text-align: center;
+
+            box-shadow: 0 2px 9px rgba(0,0,0,.05);
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+
+            background: #f0e7ff;
+            color: #7000ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: auto auto 15px;
+
+            font-size: 28px;
+        }
+
+        .empty h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .shop-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            height: 45px;
+            padding: 0 22px;
+
+            background: #7000ff;
+            color: white;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+            opacity: .9;
+        }
+
+        /* BOTTOM NAV */
+
+        .bottom-nav {
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 65px;
+
+            background: white;
+
+            border-top: 1px solid #ddd;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            z-index: 1000;
+
+            box-shadow: 0 -2px 8px rgba(0,0,0,.05);
+        }
+
+        .bottom-item {
+            width: 20%;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 5px;
+
+            color: #9099a8;
+
+            font-size: 9px;
+
+            transition: .2s;
+        }
+
+        .bottom-item i {
+            font-size: 16px;
+        }
+
+        .bottom-item:hover {
+            color: #7000ff;
+        }
+
+        .bottom-item.active {
+            color: #7000ff;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:600px) {
+
+            .header {
+                height: 115px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .order-top {
+                padding: 13px;
+            }
+
+            .order-body {
+                padding: 13px;
+            }
+
+            .product-image {
+                width: 55px;
+                height: 55px;
+            }
+
+            .product-name {
+                font-size: 12px;
+            }
+
+            .total-price {
+                font-size: 15px;
+            }
+
+            .order-price {
+                font-size: 11px;
+            }
+
+            .status {
+                font-size: 9px;
+                padding: 5px 8px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="header-top">
+
+        <a href="{% url 'profile' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="header-title">
+            Buyurtmalarim
+        </div>
+
+        <div style="width:42px;"></div>
+
+    </div>
+
+    <div class="header-subtitle">
+        Barcha buyurtmalaringiz shu yerda
+    </div>
+
+</header>
+
+
+<!-- CONTENT -->
+
+<main class="content">
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+            <div class="order-card">
+
+                <!-- ORDER HEADER -->
+
+                <div class="order-top">
+
+                    <div>
+
+                        <div class="order-number">
+                            Buyurtma #{{ order.id }}
+                        </div>
+
+                        <div class="order-date">
+
+                            {% if order.created_at %}
+                                {{ order.created_at|date:"d.m.Y H:i" }}
+                            {% elif order.yuborilgan_sana %}
+                                {{ order.yuborilgan_sana|date:"d.m.Y H:i" }}
+                            {% else %}
+                                Sana ko‘rsatilmagan
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    {% if order.status %}
+
+                        <div class="status
+                            {% if order.status == 'pending' %}pending
+                            {% elif order.status == 'paid' %}paid
+                            {% elif order.status == 'processing' %}processing
+                            {% elif order.status == 'shipping' %}shipping
+                            {% elif order.status == 'delivered' %}delivered
+                            {% elif order.status == 'cancelled' %}cancelled
+                            {% endif %}
+                        ">
+
+                            {% if order.status == "pending" %}
+                                Kutilmoqda
+
+                            {% elif order.status == "paid" %}
+                                To‘langan
+
+                            {% elif order.status == "processing" %}
+                                Tayyorlanmoqda
+
+                            {% elif order.status == "shipping" %}
+                                Yetkazilmoqda
+
+                            {% elif order.status == "delivered" %}
+                                Yetkazildi
+
+                            {% elif order.status == "cancelled" %}
+                                Bekor qilingan
+
+                            {% else %}
+                                {{ order.status }}
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ORDER BODY -->
+
+                <div class="order-body">
+
+                    {% if order.items.all %}
+
+                        {% for item in order.items.all|slice:":3" %}
+
+                            <div class="product-row">
+
+                                <div class="product-image">
+
+                                    {% if item.product.image %}
+
+                                        <img src="{{ item.product.image.url }}"
+                                             alt="{{ item.product.name }}">
+
+                                    {% else %}
+
+                                        <i class="fa-solid fa-box"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <div class="product-name">
+                                        {{ item.product.name }}
+                                    </div>
+
+                                    <div class="product-quantity">
+                                        Soni: {{ item.quantity }}
+                                    </div>
+
+                                </div>
+
+
+                                {% if item.price %}
+
+                                    <div class="order-price">
+                                        {{ item.price|floatformat:0 }} so‘m
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            {% if not forloop.last %}
+                                <div style="height:10px;"></div>
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="product-row">
+
+                            <div class="product-image">
+                                <i class="fa-solid fa-box"></i>
+                            </div>
+
+                            <div class="product-info">
+
+                                <div class="product-name">
+                                    Buyurtma #{{ order.id }}
+                                </div>
+
+                                <div class="product-quantity">
+                                    Buyurtma ma'lumotlari
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="divider"></div>
+
+
+                    <!-- TOTAL -->
+
+                    <div class="order-bottom">
+
+                        <div class="total-label">
+                            Jami summa
+                        </div>
+
+                        <div class="total-price">
+
+                            {% if order.total_price %}
+                                {{ order.total_price|floatformat:0 }} so‘m
+
+                            {% elif order.total %}
+                                {{ order.total|floatformat:0 }} so‘m
+
+                            {% elif order.amount %}
+                                {{ order.amount|floatformat:0 }} so‘m
+
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="order-buttons">
+
+                        {% if order.id %}
+
+                            <a href="{% url 'buyurtmalar_detail' order.id %}"
+                               class="order-btn details-btn">
+
+                                <i class="fa-solid fa-eye"></i>
+                                &nbsp; Batafsil
+
+                            </a>
+
+                        {% endif %}
+
+
+                        {% if order.status == "pending" %}
+
+                            <a href="{% url 'payment_page' order.id %}"
+                               class="order-btn pay-btn">
+
+                                <i class="fa-solid fa-credit-card"></i>
+                                &nbsp; To'lov qilish
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <!-- EMPTY -->
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+
+            <h3>
+                Hali buyurtmalar yo‘q
+            </h3>
+
+            <p>
+                Xarid qilgan mahsulotlaringiz shu yerda ko‘rinadi.
+            </p>
+
+            <a href="{% url 'index' %}" class="shop-btn">
+
+                <i class="fa-solid fa-shop"></i>
+
+                Xarid qilish
+
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <a href="{% url 'index' %}" class="bottom-item">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>Bosh sahifa</span>
+
+    </a>
+
+
+    <a href="{% url 'index' %}" class="bottom-item">
+
+        <i class="fa-solid fa-table-cells"></i>
+
+        <span>Katalog</span>
+
+    </a>
+
+
+    <a href="{% url 'cart_view' %}" class="bottom-item">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+        <span>Savat</span>
+
+    </a>
+
+
+    <a href="{% url 'index' %}" class="bottom-item">
+
+        <i class="fa-solid fa-bolt"></i>
+
+        <span>Tezkor</span>
+
+    </a>
+
+
+    <a href="{% url 'profile' %}" class="bottom-item active">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>Profil</span>
+
+    </a>
+
+</nav>
+
+</body>
+</html>

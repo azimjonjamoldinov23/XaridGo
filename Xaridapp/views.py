@@ -7,6 +7,12 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Product
 from django.shortcuts import get_object_or_404
 from .models import Order
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Product, Notification
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Order
 
 def index(request):
     category_slug = request.GET.get('category')
@@ -38,14 +44,23 @@ def signup_view(request):
 def custom_login_view(request):
     if request.method == 'POST':
         form = CustomLoginForm(request, data=request.POST)
+
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+
             return redirect('index')
+
     else:
         form = CustomLoginForm()
-    return render(request, 'Xaridapp/login.html', {'form': form})
 
+    return render(
+        request,
+        'Xaridapp/login.html',
+        {
+            'form': form
+        }
+    )
 @login_required
 def profile_view(request):
     return render(request, 'Xaridapp/profile.html')
@@ -58,27 +73,39 @@ from .models import Product
 from django.shortcuts import get_object_or_404, redirect
 from .models import Product # Modelingiz nomini tekshiring!
 
+@login_required
 def add_to_cart(request, product_id):
     # Mahsulotni topish
     product = get_object_or_404(Product, id=product_id)
-    
+
     # Sessiyadan savatni olish
     cart = request.session.get('cart', {})
-    
+
     # Mahsulot ID sini string formatga o'tkazish
     str_id = str(product_id)
-    
+
     # Savatga qo'shish yoki sonini oshirish
     if str_id in cart:
         cart[str_id] += 1
     else:
         cart[str_id] = 1
-        
+
     # Sessiyani yangilash
     request.session['cart'] = cart
-    request.session.modified = True # BU QATOR MUHIM!
-    
+    request.session.modified = True
+
+    # ==============================
+    # BILDIRISHNOMA YARATISH
+    # ==============================
+    Notification.objects.create(
+        user=request.user,
+        title="Savatga qo‘shildi 🛒",
+        message=f"{product.name} savatingizga qo‘shildi.",
+        notification_type="cart"
+    )
+
     return redirect('index')
+
 
 def cart_view(request):
     return render(request, 'Xaridapp/cart.html') # Yoki o'zingizning savat shabloningiz nomi
@@ -228,3 +255,154 @@ def search_view(request):
         'products': products,
     }
     return render(request, 'Xaridapp/search.html', context)
+
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        request.user.username = request.POST.get('username')
+        request.user.email = request.POST.get('email')
+        request.user.save()
+
+        return redirect('profile')
+
+    return render(request, 'xaridapp/edit_profile.html')
+
+
+from django.shortcuts import redirect, get_object_or_404
+from .models import Product
+
+
+def add_to_favorites(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if 'favorites' not in request.session:
+        request.session['favorites'] = []
+
+    favorites = request.session['favorites']
+
+    if product_id not in favorites:
+        favorites.append(product_id)
+    else:
+        favorites.remove(product_id)
+
+    request.session['favorites'] = favorites
+    request.session.modified = True
+
+    return redirect('product_detail', pk=product_id)
+
+def add_to_favorites(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    favorites = request.session.get('favorites', [])
+
+    product_id = int(product_id)
+
+    if product_id in favorites:
+        favorites.remove(product_id)
+    else:
+        favorites.append(product_id)
+
+    request.session['favorites'] = favorites
+    request.session.modified = True
+
+    return redirect('product_detail', pk=product_id)
+
+
+def favorites_view(request):
+    favorites = request.session.get('favorites', [])
+
+    products = Product.objects.filter(id__in=favorites)
+
+    return render(
+        request,
+        'Xaridapp/favorites.html',
+        {'products': products}
+    )
+
+@login_required
+def favorites_view(request):
+    favorites = request.session.get('favorites', [])
+
+    product_ids = []
+
+    for item in favorites:
+        try:
+            product_ids.append(int(item))
+        except:
+            pass
+
+    products = Product.objects.filter(id__in=product_ids)
+
+    return render(
+        request,
+        'Xaridapp/favorites.html',
+        {
+            'products': products
+        }
+    )
+
+def addresses(request):
+    return render(request, "Xaridapp/addresses.html")
+
+
+def payment(request):
+    return render(request, "Xaridapp/payment.html")
+
+
+def notifications(request):
+    return render(request, "Xaridapp/notifications.html")
+
+
+def help_center(request):
+    return render(request, "Xaridapp/help_center.html")
+
+
+def returns(request):
+    return render(request, "Xaridapp/returns.html")
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.filter(
+        user=request.user
+    ).order_by("-created_at")
+
+    return render(
+        request,
+        "Xaridapp/notifications.html",
+        {
+            "notifications": notifications
+        }
+    )
+
+def payment_methods(request):
+    return render(
+        request,
+        'Xaridapp/payment_methods.html'
+    )
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Order
+
+
+@login_required
+def orders(request):
+    orders = Order.objects.all().order_by('-created_at')
+
+    return render(request, 'Xaridapp/buyurtmalar.html', {
+        'orders': orders
+    })
+
+def order_detail(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    return render(request, 'Xaridapp/buyurtmalar_detail.html', {'order': order})    
+
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

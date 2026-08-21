@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilni tahrirlash</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+        }
+
+        .header {
+            background: linear-gradient(110deg, #7000ff, #a82cff);
+            color: white;
+            padding: 22px 18px;
+            border-radius: 0 0 18px 18px;
+        }
+
+        .header h2 {
+            font-size: 20px;
+        }
+
+        .container {
+            padding: 14px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #7000ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .title {
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 0 14px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #7000ff;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 12px;
+            background: #7000ff;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5c00d6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h2>Profilni tahrirlash</h2>
+    </div>
+
+    <div class="container">
+
+        <a href="{% url 'profile' %}" class="back">
+            ← Profilga qaytish
+        </a>
+
+        <div class="card">
+
+            <div class="title">
+                Ma'lumotlarim
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label>Foydalanuvchi nomi</label>
+
+                <input
+                    type="text"
+                    name="username"
+                    value="{{ user.username }}"
+                    required
+                >
+
+                <label>Elektron pochta</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ user.email }}"
+
+                
+                <label for="phone">Telefon raqami</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+998 90 123 45 67"
+                    value="{{ user.profile.phone|default:'' }}"
+
+                <label for="age">Yosh</label>
+                
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    min="1"
+                    max="120"
+                    placeholder="Yoshingizni kiriting"
+                    value="{{ user.profile.age|default:'' }}"
+>
+>>
+
+                <button type="submit">
+                    Saqlash
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

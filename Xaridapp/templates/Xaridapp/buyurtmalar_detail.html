@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buyurtma #{{ order.id }}</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple: #6411d9;
+            --purple-dark: #4c08b8;
+            --purple-light: #f0eaff;
+            --purple-soft: #f7f3ff;
+            --text: #25222b;
+            --muted: #85808d;
+            --border: #e9e5ee;
+            --bg: #f5f4f7;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 100px;
+        }
+
+        /* HEADER */
+        .top-header {
+            min-height: 150px;
+            background: linear-gradient(
+                120deg,
+                #4b00b8,
+                #7200e8,
+                #b000df
+            );
+            border-radius: 0 0 22px 22px;
+            color: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 35px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .header-content p {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        /* MAIN */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 5px 20px rgba(50, 30, 80, 0.06);
+        }
+
+        /* CARD TOP */
+        .card-top {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .order-number {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .date {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .status {
+            background: #fff5df;
+            color: #a56b00;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ORDER INFO */
+        .order-info {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            border-radius: 15px;
+            background: #f1eff3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .order-text h2 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .order-text p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* DETAILS */
+        .details {
+            padding: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 0;
+            border-bottom: 1px solid #f0edf3;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .total {
+            padding-top: 20px;
+            margin-top: 5px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total span {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .total strong {
+            color: var(--purple);
+            font-size: 20px;
+        }
+
+        /* PRODUCTS */
+        .products-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 12px rgba(50, 30, 80, 0.04);
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .product-quantity {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .product-price {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        /* EMPTY */
+        .empty {
+            padding: 20px;
+            background: var(--purple-soft);
+            color: var(--muted);
+            text-align: center;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        /* BUTTONS */
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            min-height: 48px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-back {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .btn-back:hover {
+            background: #e6dcff;
+        }
+
+        .btn-pay {
+            color: white;
+            background: linear-gradient(
+                90deg,
+                #5700d4,
+                #7700ed,
+                #6200ce
+            );
+            box-shadow: 0 5px 15px rgba(103, 0, 220, 0.25);
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 500px) {
+            .top-header {
+                min-height: 135px;
+            }
+
+            .header-content h1 {
+                font-size: 21px;
+            }
+
+            .back-btn {
+                left: 15px;
+                top: 25px;
+            }
+
+            .container {
+                margin-top: 18px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- YUQORI BINAFSHA HEADER -->
+    <header class="top-header">
+
+        <a href="/buyurtmalar/" class="back-btn">
+            ←
+        </a>
+
+        <div class="header-content">
+            <h1>Buyurtma ma'lumotlari</h1>
+            <p>Buyurtmangiz haqidagi barcha ma'lumotlar</p>
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- ASOSIY BUYURTMA CARD -->
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="order-number">
+                        Buyurtma #{{ order.id }}
+                    </div>
+
+                    {% if order.created_at %}
+                        <div class="date">
+                            {{ order.created_at|date:"d.m.Y H:i" }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if order.status %}
+                    <div class="status">
+                        {{ order.status }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="order-info">
+
+                <div class="icon-box">
+                    🛍️
+                </div>
+
+                <div class="order-text">
+                    <h2>Buyurtma #{{ order.id }}</h2>
+                    <p>Buyurtma ma'lumotlari</p>
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                {% if order.user %}
+                <div class="detail-row">
+                    <span class="detail-label">Mijoz</span>
+                    <span class="detail-value">{{ order.user }}</span>
+                </div>
+                {% endif %}
+
+                {% if order.status %}
+                <div class="detail-row">
+                    <span class="detail-label">Buyurtma holati</span>
+                    <span class="detail-value">{{ order.status }}</span>
+                </div>
+                {% endif %}
+
+                {% if order.created_at %}
+                <div class="detail-row">
+                    <span class="detail-label">Buyurtma sanasi</span>
+                    <span class="detail-value">
+                        {{ order.created_at|date:"d.m.Y H:i" }}
+                    </span>
+                </div>
+                {% endif %}
+
+                <!-- JAMI SUMMA -->
+                {% if order.total_price %}
+                <div class="total">
+                    <span>Jami summa</span>
+                    <strong>{{ order.total_price }} so'm</strong>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- MAHSULOTLAR -->
+        <h2 class="products-title">
+            Buyurtmadagi mahsulotlar
+        </h2>
+
+
+        {% if order.items.all %}
+
+            {% for item in order.items.all %}
+
+            <div class="product-card">
+
+                <div>
+                    <div class="product-name">
+                        {{ item.product }}
+                    </div>
+
+                    <div class="product-quantity">
+                        Soni: {{ item.quantity }}
+                    </div>
+                </div>
+
+                <div class="product-price">
+                    {{ item.price }} so'm
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+                Bu buyurtmada mahsulotlar mavjud emas.
+            </div>
+
+        {% endif %}
+
+
+        <!-- TUGMALAR -->
+        <div class="actions">
+
+            <a href="/buyurtmalar/" class="btn btn-back">
+                ◉ Orqaga
+            </a>
+
+            <a href="{% url 'payment_page' order.id %}" class="btn btn-pay">
+                ▣ To'lov qilish
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

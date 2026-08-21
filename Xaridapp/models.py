@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Kategoriya nomi")
@@ -52,3 +53,52 @@ class Order(models.Model):
     class Meta:
         verbose_name = "Buyurtma"
         verbose_name_plural = "Buyurtmalar"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+
+    title = models.CharField(max_length=200)
+
+    message = models.TextField()
+
+    notification_type = models.CharField(
+        max_length=30,
+        default="info"
+    )
+
+    is_read = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"
+
+    class Meta:
+        ordering = ["-created_at"]
+
+
+
+
+
+class buyurtmalar(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    customer_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=20)
+    address = models.TextField()
+    total_price = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=50, default='Kutilmoqda')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Buyurtma #{self.id} - {self.customer_name}"

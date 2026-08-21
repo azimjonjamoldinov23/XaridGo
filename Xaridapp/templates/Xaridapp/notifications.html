@@ -1,0 +1,516 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bildirishnomalar — XaridGo</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #222;
+            padding-bottom: 80px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* HEADER */
+
+        .header {
+            height: 128px;
+            background: linear-gradient(
+                110deg,
+                #7000ff,
+                #8500ff,
+                #b42cff
+            );
+
+            color: white;
+            border-radius: 0 0 20px 20px;
+            padding: 20px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.15);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+            font-size: 18px;
+        }
+
+        .header-title {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .clear-btn {
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 14px;
+        }
+
+        .notification-box {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+
+            box-shadow: 0 2px 7px rgba(0,0,0,.06);
+        }
+
+        .notification {
+            position: relative;
+
+            display: flex;
+            align-items: flex-start;
+
+            gap: 14px;
+
+            padding: 17px;
+
+            border-bottom: 1px solid #eeeeee;
+
+            transition: .2s;
+        }
+
+        .notification:last-child {
+            border-bottom: none;
+        }
+
+        .notification:hover {
+            background: #faf7ff;
+        }
+
+        .notification.unread {
+            background: #faf6ff;
+        }
+
+        .notification.unread::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 3px;
+
+            background: #7000ff;
+        }
+
+        /* ICON */
+
+        .notification-icon {
+            width: 43px;
+            height: 43px;
+
+            min-width: 43px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eee5ff;
+            color: #7000ff;
+
+            font-size: 17px;
+        }
+
+        .notification-icon.cart {
+            background: #fff1df;
+            color: #ff8a00;
+        }
+
+        .notification-icon.payment {
+            background: #e6f7ea;
+            color: #20a443;
+        }
+
+        .notification-icon.product {
+            background: #e7f2ff;
+            color: #1688d8;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .notification-text {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .notification-time {
+            margin-top: 7px;
+            font-size: 10px;
+            color: #999;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #7000ff;
+
+            margin-top: 6px;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            padding: 70px 20px;
+            text-align: center;
+            color: #888;
+        }
+
+        .empty i {
+            font-size: 45px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .empty h3 {
+            color: #555;
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            font-size: 12px;
+        }
+
+        /* BOTTOM */
+
+        .bottom-nav {
+            position: fixed;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 64px;
+
+            background: white;
+
+            border-top: 1px solid #e5e5e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            z-index: 1000;
+
+            box-shadow: 0 -2px 8px rgba(0,0,0,.05);
+        }
+
+        .bottom-item {
+            width: 20%;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 5px;
+
+            color: #8c95a3;
+
+            font-size: 9px;
+        }
+
+        .bottom-item i {
+            font-size: 16px;
+        }
+
+        .bottom-item.active {
+            color: #7000ff;
+        }
+
+        @media(max-width:600px) {
+
+            .header {
+                height: 115px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .notification {
+                padding: 14px;
+            }
+
+            .notification-icon {
+                width: 39px;
+                height: 39px;
+                min-width: 39px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="header-top">
+
+        <a href="{% url 'profile' %}"
+           class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+        </a>
+
+        <div class="header-title">
+            Bildirishnomalar
+        </div>
+
+        <button class="clear-btn"
+                onclick="clearNotifications()">
+
+            Tozalash
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+    <div class="notification-box"
+         id="notificationBox">
+
+        {% for notification in notifications %}
+
+            <div class="notification
+                {% if not notification.is_read %}
+                    unread
+                {% endif %}
+            ">
+
+                <!-- ICON -->
+
+                <div class="notification-icon
+                    {% if notification.notification_type == 'cart' %}
+                        cart
+                    {% elif notification.notification_type == 'payment' %}
+                        payment
+                    {% elif notification.notification_type == 'product' %}
+                        product
+                    {% endif %}
+                ">
+
+                    {% if notification.notification_type == "cart" %}
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                    {% elif notification.notification_type == "payment" %}
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                    {% elif notification.notification_type == "product" %}
+
+                        <i class="fa-solid fa-box"></i>
+
+                    {% else %}
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- TEXT -->
+
+                <div class="notification-content">
+
+                    <div class="notification-title">
+                        {{ notification.title }}
+                    </div>
+
+                    <div class="notification-text">
+                        {{ notification.message }}
+                    </div>
+
+                    <div class="notification-time">
+
+                        {{ notification.created_at|date:"d.m.Y H:i" }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- UNREAD -->
+
+                {% if not notification.is_read %}
+
+                    <div class="unread-dot"></div>
+
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+
+                <i class="fa-regular fa-bell-slash"></i>
+
+                <h3>
+                    Bildirishnomalar yo‘q
+                </h3>
+
+                <p>
+                    Hozircha sizda bildirishnomalar mavjud emas.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <a href="{% url 'index' %}"
+       class="bottom-item">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>Bosh sahifa</span>
+
+    </a>
+
+
+    <a href="{% url 'index' %}"
+       class="bottom-item">
+
+        <i class="fa-solid fa-table-cells"></i>
+
+        <span>Katalog</span>
+
+    </a>
+
+
+    <a href="{% url 'cart_view' %}"
+       class="bottom-item">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+        <span>Savat</span>
+
+    </a>
+
+
+    <a href="{% url 'index' %}"
+       class="bottom-item">
+
+        <i class="fa-solid fa-bolt"></i>
+
+        <span>Tezkor</span>
+
+    </a>
+
+
+    <a href="{% url 'profile' %}"
+       class="bottom-item active">
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>Profil</span>
+
+    </a>
+
+</nav>
+
+
+<script>
+
+function clearNotifications() {
+
+    const box = document.getElementById("notificationBox");
+
+    box.innerHTML = `
+        <div class="empty" style="display:block;">
+            <i class="fa-regular fa-bell-slash"></i>
+
+            <h3>
+                Bildirishnomalar yo‘q
+            </h3>
+
+            <p>
+                Hozircha sizda bildirishnomalar mavjud emas.
+            </p>
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>

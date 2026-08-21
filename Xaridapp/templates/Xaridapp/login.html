@@ -3,124 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>XaridGo - Tizimga kirish</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { background-color: #f4f5f7; font-family: Arial, sans-serif; }
-        .login-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            padding: 30px;
-            max-width: 450px;
-            margin: 50px auto;
+        * {
+            box-sizing: border-box;
         }
-        .btn-uzum {
-            background-color: #7000ff;
-            color: white;
-            font-weight: bold;
-            border-radius: 8px;
-        }
-        .btn-uzum:hover {
-            background-color: #5b00cc;
-            color: white;
-        }
-        .login-card input[type="text"],
-        .login-card input[type="password"] {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            font-size: 14px;
-        }
-        .login-card input:focus {
-            border-color: #7000ff;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(112, 0, 255, 0.1);
-            background-color: #fff;
-        }
-        .password-container {
-            position: relative;
+
+        body {
+            margin: 0;
+            background-color: #f4f5f7;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
-        .password-container input {
-            padding-right: 40px !important;
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            padding: 32px;
         }
+
+        .logo {
+            color: #7000ff;
+            font-size: 25px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b8e99;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            color: #1f2026;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #d8d9df;
+            border-radius: 9px;
+            padding: 0 14px;
+            background: #f9f9fa;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #7000ff;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(112, 0, 255, 0.10);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box .form-control {
+            padding-right: 48px;
+        }
+
         .toggle-password {
             position: absolute;
-            right: 12px;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8b8e99;
             cursor: pointer;
-            color: #6c757d;
-            font-size: 15px;
-            z-index: 10;
+            font-size: 16px;
+            z-index: 5;
         }
+
         .toggle-password:hover {
             color: #7000ff;
         }
-        label {
-            font-weight: 500;
+
+        .error-message {
+            color: #e53935;
             font-size: 13px;
-            color: #333;
-            margin-bottom: 4px;
-            margin-top: 8px;
+            margin-top: 6px;
+        }
+
+        .general-error {
+            background: #fff0f0;
+            border: 1px solid #ffd0d0;
+            border-radius: 9px;
+            padding: 11px 13px;
+            color: #d32f2f;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 46px;
+            border: none;
+            border-radius: 9px;
+            background: #7000ff;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .login-button:hover {
+            background: #5f00d9;
+        }
+
+        .login-button:active {
+            transform: scale(0.99);
+        }
+
+        .back-link {
             display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #8b8e99;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #7000ff;
+        }
+
+        .signup-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: #8b8e99;
+        }
+
+        .signup-link {
+            color: #7000ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-card {
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <div class="login-card">
-            <h3 class="text-center fw-bold mb-1" style="color: #7000ff;">🛒 XaridGo</h3>
-            <p class="text-center text-muted mb-4" style="font-size: 14px;">Tizimga kirish</p>
-            
-            <form method="post">
-                {% csrf_token %}
-                
-                {% for field in form %}
-                    <div class="mb-3">
-                        <label>{{ field.label }}</label>
-                        
-                        {% if "password" in field.name.lower %}
-                            <div class="password-container">
-                                {{ field }}
-                                <i class="fa-solid fa-eye toggle-password" onclick="togglePassword(this)"></i>
-                            </div>
-                        {% else %}
-                            {{ field }}
-                        {% endif %}
-                        
-                        {% for error in field.errors %}
-                            <div class="text-danger" style="font-size: 12px;">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-                
-                <button type="submit" class="btn btn-uzum w-100 py-2 mt-3">Kirish</button>
-            </form>
-            
-            <div class="text-center mt-4">
-                <a href="{% url 'index' %}" class="text-decoration-none text-muted small">← Bosh sahifaga qaytish</a>
-            </div>
-        </div>
+<div class="login-card">
+
+    <!-- Logo -->
+    <div class="logo">
+        🛒 XaridGo
     </div>
 
-    <script>
-        function togglePassword(element) {
-            const input = element.previousElementSibling;
-            if (input.type === "password") {
-                input.type = "text";
-                element.classList.remove("fa-eye");
-                element.classList.add("fa-eye-slash");
-            } else {
-                input.type = "password";
-                element.classList.remove("fa-eye-slash");
-                element.classList.add("fa-eye");
-            }
-        }
-    </script>
+    <div class="subtitle">
+        Tizimga kirish
+    </div>
+
+
+    <form method="POST" action="">
+
+        {% csrf_token %}
+
+
+        <!-- Umumiy login xatosi -->
+        {% if form.non_field_errors %}
+            <div class="general-error">
+                {% for error in form.non_field_errors %}
+                    <div>
+                        <i class="fa-solid fa-circle-exclamation me-1"></i>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+        <!-- Username -->
+        <div class="form-group">
+
+            <label class="form-label">
+                {{ form.username.label }}
+            </label>
+
+            {{ form.username }}
+
+            {% for error in form.username.errors %}
+                <div class="error-message">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Parol -->
+        <div class="form-group">
+
+            <label class="form-label">
+                {{ form.password.label }}
+            </label>
+
+            <div class="password-box">
+
+                {{ form.password }}
+
+                <i
+                    class="fa-solid fa-eye toggle-password"
+                    id="passwordToggle"
+                    onclick="togglePassword()">
+                </i>
+
+            </div>
+
+            {% for error in form.password.errors %}
+                <div class="error-message">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Kirish -->
+        <button type="submit" class="login-button">
+            Kirish
+        </button>
+
+    </form>
+
+
+    <!-- Ro'yxatdan o'tish -->
+    <div class="signup-text">
+        Hisobingiz yo‘qmi?
+        <a href="{% url 'signup' %}" class="signup-link">
+            Ro‘yxatdan o‘tish
+        </a>
+    </div>
+
+
+    <!-- Bosh sahifa -->
+    <a href="{% url 'index' %}" class="back-link">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Bosh sahifaga qaytish
+    </a>
+
+</div>
+
+
+<script>
+
+function togglePassword() {
+
+    const passwordInput = document.getElementById(
+        "id_password"
+    );
+
+    const icon = document.getElementById(
+        "passwordToggle"
+    );
+
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        passwordInput.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>
+
 </body>
 </html>

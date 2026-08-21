@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manzillarim | XaridGo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --purple-dark: #4b08b9;
+            --purple: #6813d8;
+            --purple-bright: #7500e5;
+            --pink: #b400d9;
+            --purple-light: #f0eaff;
+            --bg: #f7f7fa;
+            --white: #ffffff;
+            --text: #282430;
+            --muted: #77717e;
+            --border: #e9e5ee;
+            --red: #dc2626;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* HEADER */
+        .header {
+            height: 170px;
+            background: linear-gradient(
+                110deg,
+                var(--purple-dark) 0%,
+                var(--purple-bright) 48%,
+                var(--pink) 100%
+            );
+            border-radius: 0 0 25px 25px;
+            color: white;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 28px;
+            top: 55px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 28px;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .header-content p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        /* TOP SECTION */
+        .top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+        }
+
+        .add-btn {
+            border: none;
+            min-height: 48px;
+            padding: 0 20px;
+            border-radius: 14px;
+            background: linear-gradient(
+                90deg,
+                #4e08ba,
+                #7500df
+            );
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 7px 18px rgba(95, 0, 210, 0.2);
+        }
+
+        /* ADDRESS LIST */
+        .address-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .address-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 5px 18px rgba(50, 20, 80, 0.05);
+            position: relative;
+        }
+
+        .address-card.default {
+            border: 2px solid #d8c4ff;
+        }
+
+        .address-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .address-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .address-icon {
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+            border-radius: 16px;
+            background: var(--purple-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .address-info h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .address-info p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .default-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: var(--purple-light);
+            color: var(--purple);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ACTIONS */
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 17px;
+            background: #f5f2f8;
+            color: var(--purple);
+        }
+
+        .delete-btn {
+            color: var(--red);
+            background: #fff0f0;
+        }
+
+        /* EMPTY */
+        .empty-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            min-height: 250px;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 22px;
+            background: var(--purple-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin-bottom: 18px;
+        }
+
+        .empty-box h3 {
+            font-size: 20px;
+            margin-bottom: 9px;
+        }
+
+        .empty-box p {
+            color: var(--muted);
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 10, 35, 0.45);
+            z-index: 1000;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 23px;
+            margin-bottom: 25px;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 18px;
+            border: none;
+            background: #f3f0f7;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 14px;
+            outline: none;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--purple);
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .save-btn {
+            width: 100%;
+            min-height: 55px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(
+                90deg,
+                #4e08ba,
+                #7500df
+            );
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* MOBILE */
+        @media (max-width: 650px) {
+            .header {
+                height: 150px;
+            }
+
+            .back-btn {
+                left: 15px;
+                top: 48px;
+                width: 48px;
+                height: 48px;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 14px;
+            }
+
+            .top-row {
+                align-items: flex-start;
+            }
+
+            .section-title {
+                font-size: 21px;
+            }
+
+            .add-btn {
+                padding: 0 14px;
+            }
+
+            .address-card {
+                padding: 18px;
+            }
+
+            .address-top {
+                flex-direction: column;
+            }
+
+            .actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <a href="/" class="back-btn">←</a>
+
+        <div class="header-content">
+            <h1>Manzillarim</h1>
+            <p>Yetkazib berish manzillaringizni boshqaring</p>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <div class="top-row">
+            <h2 class="section-title">Saqlangan manzillar</h2>
+
+            <button class="add-btn" onclick="openModal()">
+                + Manzil qo'shish
+            </button>
+        </div>
+
+
+        <!-- DJANGO ADDRESSES -->
+        {% if addresses %}
+
+        <div class="address-list">
+
+            {% for address in addresses %}
+
+            <div class="address-card {% if address.is_default %}default{% endif %}">
+
+                <div class="address-top">
+
+                    <div class="address-main">
+
+                        <div class="address-icon">📍</div>
+
+                        <div class="address-info">
+
+                            <h3>{{ address.name }}</h3>
+
+                            <p>
+                                {{ address.address }}<br>
+                                {{ address.city }}<br>
+                                {{ address.phone }}
+                            </p>
+
+                            {% if address.is_default %}
+                                <span class="default-badge">
+                                    Asosiy manzil
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button class="action-btn"
+                                title="Tahrirlash">
+                            ✏️
+                        </button>
+
+                        <button class="action-btn delete-btn"
+                                title="O'chirish"
+                                onclick="return confirm('Bu manzilni o‘chirmoqchimisiz?')">
+                            🗑️
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <!-- EMPTY STATE -->
+        <div class="empty-box">
+
+            <div class="empty-icon">📍</div>
+
+            <h3>Hali manzillar mavjud emas</h3>
+
+            <p>
+                Buyurtma berishni osonlashtirish uchun
+                yetkazib berish manzilingizni qo'shing.
+            </p>
+
+            <button class="add-btn" onclick="openModal()">
+                + Birinchi manzilni qo'shish
+            </button>
+
+        </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- ADD ADDRESS MODAL -->
+    <div class="modal" id="addressModal">
+
+        <div class="modal-content">
+
+            <button class="close-btn" onclick="closeModal()">×</button>
+
+            <h2 class="modal-title">Yangi manzil qo'shish</h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Manzil nomi</label>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Masalan: Uy"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>To'liq manzil</label>
+                    <textarea
+                        name="address"
+                        placeholder="Ko'cha, uy raqami, kvartira..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Shahar</label>
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="Masalan: Toshkent"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Telefon raqam</label>
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="+998 90 123 45 67"
+                        required
+                    >
+                </div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" name="is_default">
+                    <span>Asosiy manzil sifatida saqlash</span>
+                </label>
+
+                <button type="submit" class="save-btn">
+                    Manzilni saqlash
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        const modal = document.getElementById("addressModal");
+
+        function openModal() {
+            modal.classList.add("show");
+        }
+
+        function closeModal() {
+            modal.classList.remove("show");
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+    </script>
+
+</body>
+</html>
