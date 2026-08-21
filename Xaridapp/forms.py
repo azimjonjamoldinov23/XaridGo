@@ -5,6 +5,30 @@ from django.contrib.auth.models import User
 
 class SignUpForm(UserCreationForm):
 
+    password1 = forms.CharField(
+        label="Parol",
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder': 'Parol kiriting',
+                'class': 'form-control'
+            }
+        ),
+        min_length=1,
+        required=True
+    )
+
+    password2 = forms.CharField(
+        label="Parolni tasdiqlang",
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder': 'Parolni qayta kiriting',
+                'class': 'form-control'
+            }
+        ),
+        min_length=1,
+        required=True
+    )
+
     class Meta:
         model = User
         fields = ('username', 'email')
@@ -24,17 +48,11 @@ class SignUpForm(UserCreationForm):
             'class': 'form-control'
         })
 
-        self.fields['password1'].label = "Parol"
-        self.fields['password1'].widget.attrs.update({
-            'placeholder': 'Parol kiriting',
-            'class': 'form-control'
-        })
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
 
-        self.fields['password2'].label = "Parolni tasdiqlang"
-        self.fields['password2'].widget.attrs.update({
-            'placeholder': 'Parolni qayta kiriting',
-            'class': 'form-control'
-        })
+        # Django'ning standart password validatorlarini o'tkazib yuboramiz
+        return password
 
 
 class CustomLoginForm(AuthenticationForm):
