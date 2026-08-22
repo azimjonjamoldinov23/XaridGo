@@ -145,7 +145,11 @@ import os
 import dj_database_url
 
 # 1. ALLOWED_HOSTS ni yangilang
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "xaridgo-shop.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 # 2. MIDDLEWARE ichiga whitenoise qo'shing (SecurityMiddleware'dan keyin)
 MIDDLEWARE = [
@@ -164,3 +168,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_URL = "/admin-panel/login/"
+CSRF_TRUSTED_ORIGINS = [
+    "https://xaridgo-shop.onrender.com",
+]
