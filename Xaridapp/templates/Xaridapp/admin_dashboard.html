@@ -1,0 +1,647 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XaridGo Admin</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f9;
+            color: #202124;
+            min-height: 100vh;
+        }
+
+        /* ================= HEADER ================= */
+
+        .top-header {
+            width: 100%;
+            background: linear-gradient(110deg, #6a00ff, #8b00ff, #b72cff);
+            color: white;
+            padding: 18px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 20px rgba(110, 0, 255, 0.25);
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.16);
+            padding: 9px 16px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: white;
+            color: #7100ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 32px 28px 60px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .page-title .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #6c00ff, #a100ff);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 20px rgba(111, 0, 255, .22);
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            color: #242424;
+        }
+
+        .page-title p {
+            color: #777;
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        /* ================= STATISTICS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 22px;
+            border: 1px solid #e8e8ee;
+            box-shadow: 0 8px 25px rgba(30, 20, 60, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: .25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(100, 0, 255, 0.12);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: -35px;
+            top: -35px;
+            border-radius: 50%;
+            background: rgba(124, 0, 255, .07);
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0e7ff;
+            color: #7000ff;
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .stat-title {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            color: #6500e8;
+        }
+
+        /* ================= ORDERS BUTTON ================= */
+
+        .orders-banner {
+            background: linear-gradient(110deg, #6d00ff, #8f00ff, #b329ff);
+            color: white;
+            border-radius: 22px;
+            padding: 22px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 12px 30px rgba(107, 0, 255, .20);
+        }
+
+        .orders-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .orders-icon {
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,.18);
+            border-radius: 17px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .orders-left h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .orders-left p {
+            color: rgba(255,255,255,.78);
+            font-size: 13px;
+        }
+
+        .orders-btn {
+            text-decoration: none;
+            color: #6900e9;
+            background: white;
+            padding: 13px 22px;
+            border-radius: 13px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .orders-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 7px 20px rgba(0,0,0,.15);
+        }
+
+        /* ================= RECENT ORDERS ================= */
+
+        .recent-card {
+            background: white;
+            border-radius: 22px;
+            padding: 25px;
+            border: 1px solid #e8e8ee;
+            box-shadow: 0 8px 25px rgba(30,20,60,.06);
+        }
+
+        .recent-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recent-header h2 {
+            font-size: 20px;
+        }
+
+        .recent-header span {
+            font-size: 22px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 12px;
+            color: #7000ff;
+            font-size: 13px;
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 14px;
+        }
+
+        tr {
+            transition: .2s ease;
+        }
+
+        tbody tr:hover {
+            background: #faf7ff;
+        }
+
+        .order-id {
+            color: #6800ed;
+            font-weight: 800;
+        }
+
+        .price {
+            font-weight: 700;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #f1e9ff;
+            color: #6800ed;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            padding: 25px 10px;
+            color: #888;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .top-header {
+                padding: 15px 18px;
+            }
+
+            .brand {
+                font-size: 21px;
+            }
+
+            .admin-user {
+                padding: 7px 10px;
+            }
+
+            .admin-avatar {
+                width: 30px;
+                height: 30px;
+            }
+
+            .container {
+                padding: 22px 15px 50px;
+            }
+
+            .page-title h1 {
+                font-size: 24px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 17px;
+                border-radius: 16px;
+            }
+
+            .stat-number {
+                font-size: 25px;
+            }
+
+            .orders-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+            }
+
+            .orders-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .recent-card {
+                padding: 17px;
+                border-radius: 17px;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                align-items: flex-start;
+            }
+
+            .page-title h1 {
+                font-size: 22px;
+            }
+
+            .admin-user span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <div class="brand">
+        🛒 XaridGo Admin
+    </div>
+
+    <div class="admin-user">
+        <div class="admin-avatar">
+            {% if request.user.username %}
+                {{ request.user.username|first|upper }}
+            {% else %}
+                A
+            {% endif %}
+        </div>
+
+        <span>
+            {% if request.user.username %}
+                {{ request.user.username }}
+            {% else %}
+                Admin
+            {% endif %}
+        </span>
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <!-- TITLE -->
+
+    <div class="page-title">
+
+        <div class="icon">
+            📊
+        </div>
+
+        <div>
+            <h1>Boshqaruv paneli</h1>
+            <p>XaridGo do'konini boshqarish</p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🛍️
+            </div>
+
+            <div class="stat-title">
+                Mahsulotlar
+            </div>
+
+            <div class="stat-number">
+                {{ product_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+            <div class="stat-title">
+                Buyurtmalar
+            </div>
+
+            <div class="stat-number">
+                {{ order_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⏳
+            </div>
+
+            <div class="stat-title">
+                Kutilmoqda
+            </div>
+
+            <div class="stat-number">
+                {{ pending_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🚚
+            </div>
+
+            <div class="stat-title">
+                Yetkazilgan
+            </div>
+
+            <div class="stat-number">
+                {{ delivered_count }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ORDERS ================= -->
+
+    <section class="orders-banner">
+
+        <div class="orders-left">
+
+            <div class="orders-icon">
+                📦
+            </div>
+
+            <div>
+                <h2>Buyurtmalarni boshqarish</h2>
+
+                <p>
+                    Buyurtmalarni ko'rish, holatini o'zgartirish va nazorat qilish
+                </p>
+            </div>
+
+        </div>
+
+
+        <a href="{% url 'admin_orders' %}" class="orders-btn">
+            Buyurtmalarni boshqarish →
+        </a>
+
+    </section>
+
+
+    <!-- ================= RECENT ORDERS ================= -->
+
+    <section class="recent-card">
+
+        <div class="recent-header">
+            <span>🛒</span>
+            <h2>Oxirgi buyurtmalar</h2>
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Mijoz</th>
+                        <th>Telefon</th>
+                        <th>Summa</th>
+                        <th>Holat</th>
+                        <th>Sana</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for order in orders %}
+
+                    <tr>
+
+                        <td class="order-id">
+                            #{{ order.id }}
+                        </td>
+
+                        <td>
+                            {{ order.mijoz_nomi|default:"Ko'rsatilmagan" }}
+                        </td>
+
+                        <td>
+                            {{ order.telefon_raqami|default:"Ko'rsatilmagan" }}
+                        </td>
+
+                        <td class="price">
+                            {{ order.umumiy_narx|default:"0" }} so'm
+                        </td>
+
+                        <td>
+
+                            <span class="status">
+
+                                {% if order.maqom %}
+                                    {{ order.maqom }}
+                                {% else %}
+                                    ⏳ To'lov kutilmoqda
+                                {% endif %}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ order.yaratilgan_at|date:"d.m.Y H:i" }}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6" class="empty">
+                            Hozircha buyurtmalar yo'q.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

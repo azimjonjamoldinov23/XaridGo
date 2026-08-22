@@ -1,0 +1,629 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XaridGo — Buyurtmalar</title>
+
+    <style>
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, #302000, #090909 45%, #000000);
+    color: #fff;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    height: 75px;
+    background: rgba(15, 15, 15, 0.88);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    backdrop-filter: blur(20px);
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: #d4af37;
+}
+
+.user {
+    font-weight: 600;
+    color: #ddd;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1450px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* TOP */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* BACK BUTTON */
+.back {
+    text-decoration: none;
+    background: rgba(255,255,255,.06);
+    padding: 12px 18px;
+    border-radius: 12px;
+    color: #d4af37;
+    font-weight: 700;
+    border: 1px solid rgba(212,175,55,.25);
+    transition: .2s;
+}
+
+.back:hover {
+    background: rgba(212,175,55,.12);
+    border-color: #d4af37;
+    transform: translateY(-2px);
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(212,175,55,.18);
+    border-radius: 20px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.55),
+        0 0 35px rgba(212,175,55,.05);
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+}
+
+/* TABLE */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1100px;
+}
+
+th {
+    background: rgba(212,175,55,.07);
+    padding: 18px;
+    text-align: left;
+    font-size: 14px;
+    color: #d4af37;
+    border-bottom: 1px solid rgba(212,175,55,.15);
+}
+
+td {
+    padding: 18px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    vertical-align: middle;
+    color: #ddd;
+}
+
+tr:hover {
+    background: rgba(212,175,55,.045);
+}
+
+/* ORDER ID */
+.order-id {
+    font-weight: 800;
+    color: #d4af37;
+}
+
+/* PRICE */
+.price {
+    font-weight: 800;
+    color: #d4af37;
+}
+
+/* STATUS */
+.status-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-width: 480px;
+}
+
+.status-box form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+/* STATUS BUTTON */
+.status-btn {
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(255,255,255,.045);
+    color: #ddd;
+    border-radius: 9px;
+    padding: 8px 11px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.status-btn:hover {
+    border-color: #d4af37;
+    color: #d4af37;
+    background: rgba(212,175,55,.08);
+    transform: translateY(-1px);
+}
+
+/* ACTIVE STATUS */
+.status-btn.active {
+    background: linear-gradient(
+        135deg,
+        #d4af37,
+        #a77b13
+    );
+    color: #111;
+    border-color: #d4af37;
+    box-shadow: 0 5px 18px rgba(212,175,55,.18);
+}
+
+/* DETAIL BUTTON */
+.detail-btn {
+    display: inline-block;
+    text-decoration: none;
+    background: linear-gradient(
+        135deg,
+        #d4af37,
+        #a77b13
+    );
+    color: #111;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 800;
+    transition: .2s;
+}
+
+.detail-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(212,175,55,.2);
+}
+
+/* DATE */
+.date {
+    color: #999;
+    white-space: nowrap;
+}
+
+/* EMPTY */
+.empty {
+    padding: 80px 30px;
+    text-align: center;
+    color: #aaa;
+    font-size: 18px;
+}
+
+.empty::first-line {
+    color: #d4af37;
+}
+
+/* STRONG */
+strong {
+    color: #fff;
+}
+
+/* MOBILE */
+@media(max-width: 700px) {
+
+    .header {
+        padding: 0 15px;
+    }
+
+    .container {
+        margin-top: 15px;
+        padding: 0 10px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .user {
+        font-size: 13px;
+    }
+}
+</style>
+    
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo">
+        🛒 XaridGo Admin
+    </div>
+
+    <div class="user">
+        👤 {{ request.user.username }}
+    </div>
+
+</header>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+
+    <!-- TOP -->
+
+    <div class="top">
+
+        <div class="title">
+
+            <div class="title-icon">
+                📦
+            </div>
+
+            <span>
+                Buyurtmalar
+            </span>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_dashboard' %}"
+            class="back"
+        >
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+
+    <!-- ================= ORDERS CARD ================= -->
+
+    <div class="card">
+
+
+        {% if orders %}
+
+
+        <div class="table-header">
+
+            <div class="table-title">
+
+                🛍️ Buyurtmalar ro'yxati
+
+                <span class="count">
+                    {{ orders|length }} ta
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            MIJOZ
+                        </th>
+
+                        <th>
+                            TELEFON
+                        </th>
+
+                        <th>
+                            SUMMA
+                        </th>
+
+                        <th>
+                            BUYURTMA HOLATI
+                        </th>
+
+                        <th>
+                            SANA
+                        </th>
+
+                        <th>
+                            AMAL
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for order in orders %}
+
+                    <tr>
+
+
+                        <!-- ID -->
+
+                        <td>
+
+                            <span class="order-id">
+                                #{{ order.id }}
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- MIJOZ -->
+
+                        <td>
+
+                            <div class="customer">
+
+                                <div class="customer-icon">
+                                    👤
+                                </div>
+
+                                <div class="customer-name">
+
+                                    {{ order.mijoz_nomi|default:"-" }}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- TELEFON -->
+
+                        <td>
+
+                            <span class="phone">
+
+                                📞
+                                {{ order.telefon_raqami|default:"-" }}
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- SUMMA -->
+
+                        <td>
+
+                            <span class="price">
+
+                                {{ order.umumiy_narx }} so'm
+
+                            </span>
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <div class="status-box">
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'admin_order_detail' order.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+
+                                    <!-- TO'LOV KUTILMOQDA -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="Kutilmoqda"
+                                        class="status-btn
+                                        {% if order.maqom == 'Kutilmoqda' or order.maqom == "To'lov kutilmoqda" %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        ⏳ To'lov kutilmoqda
+                                    </button>
+
+
+                                    <!-- TO'LANGAN -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="To'langan"
+                                        class="status-btn
+                                        {% if order.maqom == "To'langan" %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        ✅ To'langan
+                                    </button>
+
+
+                                    <!-- QABUL QILINDI -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="Qabul qilindi"
+                                        class="status-btn
+                                        {% if order.maqom == 'Qabul qilindi' %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        📦 Qabul qilindi
+                                    </button>
+
+
+                                    <!-- YUBORILDI -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="Yuborildi"
+                                        class="status-btn
+                                        {% if order.maqom == 'Yuborildi' %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        🚚 Yuborildi
+                                    </button>
+
+
+                                    <!-- YETKAZILDI -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="Yetkazildi"
+                                        class="status-btn
+                                        {% if order.maqom == 'Yetkazildi' %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        🎉 Yetkazildi
+                                    </button>
+
+
+                                    <!-- BEKOR -->
+
+                                    <button
+                                        type="submit"
+                                        name="maqom"
+                                        value="Bekor qilindi"
+                                        class="status-btn
+                                        {% if order.maqom == 'Bekor qilindi' %}
+                                            active
+                                        {% endif %}"
+                                    >
+                                        ❌ Bekor qilindi
+                                    </button>
+
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- SANA -->
+
+                        <td class="date">
+
+                            📅
+                            {{ order.yaratilgan_at|date:"d.m.Y H:i" }}
+
+                        </td>
+
+
+
+                        <!-- KO'RISH -->
+
+                        <td>
+
+                            <a
+                                href="{% url 'admin_order_detail' order.id %}"
+                                class="detail-btn"
+                            >
+                                👁 Ko'rish
+                            </a>
+
+                        </td>
+
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY -->
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📦
+            </div>
+
+            <div class="empty-title">
+                Hozircha buyurtmalar yo'q
+            </div>
+
+            <div class="empty-text">
+                Yangi buyurtmalar shu yerda ko'rinadi.
+            </div>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

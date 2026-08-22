@@ -1,0 +1,1053 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buyurtmalar | XaridGo Admin</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7000ff;
+            --primary-dark: #5700cc;
+            --primary-light: #f1e9ff;
+
+            --bg: #f5f6fa;
+            --card: #ffffff;
+            --text: #202124;
+            --muted: #747474;
+            --border: #e8e8ee;
+
+            --green: #16a34a;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --blue: #2563eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 0% 0%,
+                    rgba(112, 0, 255, .08),
+                    transparent 30%
+                ),
+                #f5f6fa;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--text);
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        .header {
+            height: 74px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            background: rgba(255, 255, 255, .92);
+
+            border-bottom: 1px solid var(--border);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            font-size: 24px;
+            font-weight: 900;
+
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--primary);
+            color: white;
+
+            box-shadow:
+                0 7px 18px rgba(112, 0, 255, .22);
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            background: #f6f6f9;
+
+            border: 1px solid var(--border);
+
+            padding: 8px 14px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: var(--primary);
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .container {
+            max-width: 1250px;
+
+            margin: 0 auto;
+
+            padding: 35px 22px 60px;
+        }
+
+        /* =========================
+           PAGE TOP
+        ========================== */
+
+        .page-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            font-weight: 900;
+
+            margin-bottom: 7px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            text-decoration: none;
+
+            padding: 12px 17px;
+
+            border-radius: 11px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            color: #444;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 20px rgba(20, 20, 40, .045);
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background: var(--primary-light);
+
+            font-size: 21px;
+        }
+
+        .stat-info small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-bottom: 4px;
+        }
+
+        .stat-info strong {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        /* =========================
+           ORDER CARD
+        ========================== */
+
+        .order-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 7px 28px rgba(20, 20, 40, .055);
+
+            transition: .25s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 35px rgba(112, 0, 255, .09);
+        }
+
+        /* =========================
+           ORDER HEADER
+        ========================== */
+
+        .order-header {
+            padding: 20px 23px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--border);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(112, 0, 255, .035),
+                    transparent
+                );
+        }
+
+        .order-title {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .order-number {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--primary-light);
+
+            color: var(--primary);
+
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .order-title h2 {
+            font-size: 18px;
+            font-weight: 850;
+        }
+
+        .order-title p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .date {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           INFORMATION
+        ========================== */
+
+        .order-body {
+            padding: 22px;
+        }
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 13px;
+        }
+
+        .info-box {
+            min-height: 82px;
+
+            padding: 16px;
+
+            background: #fafafd;
+
+            border: 1px solid #eeeeF3;
+
+            border-radius: 13px;
+        }
+
+        .info-box small {
+            display: block;
+
+            color: #888;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+
+            margin-bottom: 8px;
+        }
+
+        .info-box strong {
+            display: block;
+
+            color: #222;
+
+            font-size: 15px;
+
+            line-height: 1.4;
+
+            word-break: break-word;
+        }
+
+        .price {
+            color: var(--primary) !important;
+
+            font-size: 18px !important;
+
+            font-weight: 900 !important;
+        }
+
+        /* =========================
+           STATUS
+        ========================== */
+
+        .status-section {
+            margin-top: 20px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .status-label {
+            display: block;
+
+            color: #444;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            margin-bottom: 9px;
+        }
+
+        .status-form {
+            display: flex;
+
+            gap: 10px;
+        }
+
+        select {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 13px 14px;
+
+            border-radius: 11px;
+
+            border: 1px solid #ddd;
+
+            background: white;
+
+            color: #333;
+
+            font-size: 14px;
+
+            outline: none;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px rgba(112, 0, 255, .08);
+        }
+
+        .save-btn {
+            min-width: 175px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 13px 20px;
+
+            background: var(--primary);
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+            box-shadow:
+                0 6px 16px rgba(112, 0, 255, .18);
+        }
+
+        .save-btn:hover {
+            background: var(--primary-dark);
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 9px 22px rgba(112, 0, 255, .25);
+        }
+
+        /* =========================
+           EMPTY
+        ========================== */
+
+        .empty {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            padding: 80px 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 7px 28px rgba(20, 20, 40, .05);
+        }
+
+        .empty-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background: var(--primary-light);
+
+            font-size: 30px;
+        }
+
+        .empty h2 {
+            font-size: 21px;
+
+            margin-bottom: 7px;
+        }
+
+        .empty p {
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .info-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .header {
+                padding: 0 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .admin-user span {
+                display: none;
+            }
+
+            .container {
+                padding:
+                    22px 12px 40px;
+            }
+
+            .page-top {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+
+            .order-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-form {
+                flex-direction: column;
+            }
+
+            .save-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo">
+        <div class="logo-icon">
+            🛒
+        </div>
+
+        XaridGo
+    </div>
+
+    <div class="admin-user">
+
+        <div class="avatar">
+            👤
+        </div>
+
+        <span>
+            {{ request.user.username }}
+        </span>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+    <div class="page-top">
+
+        <div class="heading">
+
+            <h1>
+                📦 Buyurtmalar
+            </h1>
+
+            <p>
+                Barcha buyurtmalarni boshqarish va holatini nazorat qilish
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'admin_dashboard' %}"
+            class="back-btn"
+        >
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         STATISTICS
+    ========================== -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📦
+            </div>
+
+            <div class="stat-info">
+
+                <small>
+                    Jami buyurtmalar
+                </small>
+
+                <strong>
+                    {{ orders|length }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                💳
+            </div>
+
+            <div class="stat-info">
+
+                <small>
+                    To'lov holati
+                </small>
+
+                <strong>
+                    Nazoratda
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🚚
+            </div>
+
+            <div class="stat-info">
+
+                <small>
+                    Yetkazib berish
+                </small>
+
+                <strong>
+                    Boshqaruv
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ORDERS
+    ========================== -->
+
+    {% for order in orders %}
+
+    <div class="order-card">
+
+        <!-- ORDER HEADER -->
+
+        <div class="order-header">
+
+            <div class="order-title">
+
+                <div class="order-number">
+                    #{{ order.id }}
+                </div>
+
+                <div>
+
+                    <h2>
+                        Buyurtma #{{ order.id }}
+                    </h2>
+
+                    <p>
+                        XaridGo buyurtmasi
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="date">
+
+                📅
+
+                {% if order.yaratilgan_at %}
+
+                    {{ order.yaratilgan_at|date:"d.m.Y H:i" }}
+
+                {% else %}
+
+                    Sana ko'rsatilmagan
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER BODY -->
+
+        <div class="order-body">
+
+            <div class="info-grid">
+
+                <!-- MIJOZ -->
+
+                <div class="info-box">
+
+                    <small>
+                        👤 Mijoz
+                    </small>
+
+                    <strong>
+
+                        {% if order.mijoz_nomi %}
+
+                            {{ order.mijoz_nomi }}
+
+                        {% else %}
+
+                            Ko'rsatilmagan
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <!-- TELEFON -->
+
+                <div class="info-box">
+
+                    <small>
+                        📞 Telefon
+                    </small>
+
+                    <strong>
+
+                        {% if order.telefon_raqami %}
+
+                            {{ order.telefon_raqami }}
+
+                        {% else %}
+
+                            Ko'rsatilmagan
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <!-- MANZIL -->
+
+                <div class="info-box">
+
+                    <small>
+                        📍 Manzil
+                    </small>
+
+                    <strong>
+
+                        {% if order.manzil %}
+
+                            {{ order.manzil }}
+
+                        {% else %}
+
+                            Manzil ko'rsatilmagan
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <!-- NARX -->
+
+                <div class="info-box">
+
+                    <small>
+                        💰 Umumiy summa
+                    </small>
+
+                    <strong class="price">
+
+                        {% if order.umumiy_narx %}
+
+                            {{ order.umumiy_narx|floatformat:0 }} so'm
+
+                        {% else %}
+
+                            0 so'm
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="status-section">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="order_id"
+                        value="{{ order.id }}"
+                    >
+
+                    <label class="status-label">
+                        📦 Buyurtma holatini o'zgartirish
+                    </label>
+
+
+                    <div class="status-form">
+
+                        <select name="maqom">
+
+                            <option
+                                value="kutilmoqda"
+                                {% if order.maqom == "kutilmoqda" %}
+                                    selected
+                                {% endif %}
+                            >
+                                ⏳ To'lov kutilmoqda
+                            </option>
+
+
+                            <option
+                                value="tolangan"
+                                {% if order.maqom == "tolangan" %}
+                                    selected
+                                {% endif %}
+                            >
+                                ✅ To'langan
+                            </option>
+
+
+                            <option
+                                value="qabul_qilindi"
+                                {% if order.maqom == "qabul_qilindi" %}
+                                    selected
+                                {% endif %}
+                            >
+                                📦 Qabul qilindi
+                            </option>
+
+
+                            <option
+                                value="yuborildi"
+                                {% if order.maqom == "yuborildi" %}
+                                    selected
+                                {% endif %}
+                            >
+                                🚚 Yuborildi
+                            </option>
+
+
+                            <option
+                                value="yetkazildi"
+                                {% if order.maqom == "yetkazildi" %}
+                                    selected
+                                {% endif %}
+                            >
+                                🎉 Yetkazildi
+                            </option>
+
+
+                            <option
+                                value="bekor_qilindi"
+                                {% if order.maqom == "bekor_qilindi" %}
+                                    selected
+                                {% endif %}
+                            >
+                                ❌ Bekor qilindi
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            💾 Holatni saqlash
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <!-- EMPTY STATE -->
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            📭
+        </div>
+
+        <h2>
+            Hozircha buyurtmalar yo'q
+        </h2>
+
+        <p>
+            Yangi buyurtmalar kelganda ular shu yerda ko'rinadi.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</main>
+
+</body>
+</html>

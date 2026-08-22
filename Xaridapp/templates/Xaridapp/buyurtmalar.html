@@ -12,6 +12,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -40,6 +41,7 @@
                 #8c00ff,
                 #bd2cff
             );
+
             color: white;
             border-radius: 0 0 22px 22px;
             padding: 20px;
@@ -54,7 +56,9 @@
         .back-btn {
             width: 42px;
             height: 42px;
+
             border-radius: 50%;
+
             background: rgba(255,255,255,.16);
 
             display: flex;
@@ -92,21 +96,18 @@
             padding: 15px;
         }
 
-        /* ORDER CARD */
+        /* CARD */
 
         .order-card {
             background: white;
             border-radius: 17px;
-            margin-bottom: 13px;
+            margin-bottom: 15px;
             overflow: hidden;
+
             box-shadow: 0 2px 9px rgba(0,0,0,.06);
-            transition: .2s;
         }
 
-        .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,.09);
-        }
+        /* TOP */
 
         .order-top {
             padding: 15px;
@@ -119,117 +120,132 @@
         }
 
         .order-number {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
         }
 
         .order-date {
             color: #999;
             font-size: 10px;
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
         /* STATUS */
 
         .status {
-            padding: 6px 10px;
+            padding: 7px 11px;
             border-radius: 20px;
+
             font-size: 10px;
             font-weight: 700;
+
+            white-space: nowrap;
         }
 
-        .status.pending {
+        .pending {
             background: #fff4d8;
             color: #b57900;
         }
 
-        .status.paid {
+        .paid {
             background: #e6f8ec;
             color: #16853b;
         }
 
-        .status.processing {
+        .processing {
             background: #eee7ff;
             color: #7000ff;
         }
 
-        .status.shipping {
+        .shipping {
             background: #e3f2fd;
             color: #1688d8;
         }
 
-        .status.delivered {
+        .delivered {
             background: #e7f8ed;
             color: #16853b;
         }
 
-        .status.cancelled {
+        .cancelled {
             background: #ffe7e7;
             color: #d62828;
         }
 
-        /* ORDER BODY */
+        /* BODY */
 
         .order-body {
-            padding: 15px;
+            padding: 16px;
         }
 
-        .product-row {
+        /* CUSTOMER */
+
+        .customer-box {
+            background: #f8f7ff;
+            border-radius: 13px;
+            padding: 14px;
+        }
+
+        .customer-title {
+            color: #7000ff;
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 13px;
+        }
+
+        .customer-row {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            align-items: flex-start;
+
+            gap: 11px;
+
+            margin-bottom: 12px;
         }
 
-        .product-image {
-            width: 62px;
-            height: 62px;
-            border-radius: 12px;
-            background: #f1f1f1;
+        .customer-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .customer-icon {
+            width: 30px;
+            height: 30px;
+
+            flex-shrink: 0;
+
+            background: #eee7ff;
+            color: #7000ff;
+
+            border-radius: 8px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            overflow: hidden;
-            flex-shrink: 0;
+            font-size: 12px;
         }
 
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-image i {
-            color: #aaa;
-            font-size: 22px;
-        }
-
-        .product-info {
+        .customer-content {
             flex: 1;
-            min-width: 0;
         }
 
-        .product-name {
-            font-size: 13px;
-            font-weight: 700;
+        .customer-label {
+            color: #999;
+            font-size: 10px;
 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            margin-bottom: 3px;
         }
 
-        .product-quantity {
-            color: #888;
-            font-size: 11px;
-            margin-top: 5px;
-        }
+        .customer-value {
+            color: #222;
 
-        .order-price {
-            font-size: 13px;
-            font-weight: 700;
-            white-space: nowrap;
+            font-size: 12px;
+
+            font-weight: 600;
+
+            line-height: 1.4;
+
+            word-break: break-word;
         }
 
         /* DIVIDER */
@@ -237,7 +253,8 @@
         .divider {
             height: 1px;
             background: #eee;
-            margin: 14px 0;
+
+            margin: 15px 0;
         }
 
         /* TOTAL */
@@ -246,31 +263,35 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             margin-bottom: 14px;
         }
 
         .total-label {
             color: #777;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .total-price {
             color: #7000ff;
-            font-size: 17px;
-            font-weight: 700;
+
+            font-size: 18px;
+
+            font-weight: 800;
         }
 
         /* BUTTONS */
 
         .order-buttons {
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 10px;
         }
 
         .order-btn {
             flex: 1;
-            height: 40px;
+
+            height: 42px;
+
             border-radius: 10px;
 
             display: flex;
@@ -280,7 +301,6 @@
             font-size: 11px;
             font-weight: 700;
 
-            cursor: pointer;
             transition: .2s;
         }
 
@@ -303,8 +323,11 @@
 
         .empty {
             background: white;
+
             border-radius: 18px;
+
             padding: 60px 20px;
+
             text-align: center;
 
             box-shadow: 0 2px 9px rgba(0,0,0,.05);
@@ -348,6 +371,7 @@
             gap: 8px;
 
             height: 45px;
+
             padding: 0 22px;
 
             background: #7000ff;
@@ -357,16 +381,9 @@
 
             font-size: 12px;
             font-weight: 700;
-
-            transition: .2s;
         }
 
-        .shop-btn:hover {
-            transform: translateY(-2px);
-            opacity: .9;
-        }
-
-        /* BOTTOM NAV */
+        /* NAV */
 
         .bottom-nav {
             position: fixed;
@@ -382,6 +399,7 @@
             border-top: 1px solid #ddd;
 
             display: flex;
+
             align-items: center;
             justify-content: space-around;
 
@@ -405,16 +423,10 @@
             color: #9099a8;
 
             font-size: 9px;
-
-            transition: .2s;
         }
 
         .bottom-item i {
             font-size: 16px;
-        }
-
-        .bottom-item:hover {
-            color: #7000ff;
         }
 
         .bottom-item.active {
@@ -445,34 +457,27 @@
                 padding: 13px;
             }
 
-            .product-image {
-                width: 55px;
-                height: 55px;
-            }
-
-            .product-name {
-                font-size: 12px;
+            .status {
+                font-size: 9px;
+                padding: 6px 8px;
             }
 
             .total-price {
-                font-size: 15px;
+                font-size: 16px;
             }
 
-            .order-price {
-                font-size: 11px;
-            }
-
-            .status {
-                font-size: 9px;
-                padding: 5px 8px;
+            .order-btn {
+                font-size: 10px;
             }
 
         }
 
     </style>
+
 </head>
 
 <body>
+
 
 <!-- HEADER -->
 
@@ -503,258 +508,311 @@
 
 <main class="content">
 
-    {% if orders %}
 
-        {% for order in orders %}
+{% if buyurtmalar %}
 
-            <div class="order-card">
 
-                <!-- ORDER HEADER -->
+    {% for order in buyurtmalar %}
 
-                <div class="order-top">
 
-                    <div>
+        <div class="order-card">
 
-                        <div class="order-number">
-                            Buyurtma #{{ order.id }}
-                        </div>
 
-                        <div class="order-date">
+            <!-- ORDER TOP -->
 
-                            {% if order.created_at %}
-                                {{ order.created_at|date:"d.m.Y H:i" }}
-                            {% elif order.yuborilgan_sana %}
-                                {{ order.yuborilgan_sana|date:"d.m.Y H:i" }}
-                            {% else %}
-                                Sana ko‘rsatilmagan
-                            {% endif %}
+            <div class="order-top">
 
-                        </div>
+                <div>
 
+                    <div class="order-number">
+                        Buyurtma #{{ order.id }}
                     </div>
 
-
-                    <!-- STATUS -->
-
-                    {% if order.status %}
-
-                        <div class="status
-                            {% if order.status == 'pending' %}pending
-                            {% elif order.status == 'paid' %}paid
-                            {% elif order.status == 'processing' %}processing
-                            {% elif order.status == 'shipping' %}shipping
-                            {% elif order.status == 'delivered' %}delivered
-                            {% elif order.status == 'cancelled' %}cancelled
-                            {% endif %}
-                        ">
-
-                            {% if order.status == "pending" %}
-                                Kutilmoqda
-
-                            {% elif order.status == "paid" %}
-                                To‘langan
-
-                            {% elif order.status == "processing" %}
-                                Tayyorlanmoqda
-
-                            {% elif order.status == "shipping" %}
-                                Yetkazilmoqda
-
-                            {% elif order.status == "delivered" %}
-                                Yetkazildi
-
-                            {% elif order.status == "cancelled" %}
-                                Bekor qilingan
-
-                            {% else %}
-                                {{ order.status }}
-                            {% endif %}
-
-                        </div>
-
-                    {% endif %}
+                    <div class="order-date">
+                        {{ order.yaratilgan_at|date:"d.m.Y • H:i" }}
+                    </div>
 
                 </div>
 
 
-                <!-- ORDER BODY -->
+                <!-- STATUS -->
 
-                <div class="order-body">
+                {% if order.maqom == "Kutilmoqda" %}
 
-                    {% if order.items.all %}
+                    <div class="status pending">
+                        ⏳ To‘lov kutilmoqda
+                    </div>
 
-                        {% for item in order.items.all|slice:":3" %}
+                {% elif order.maqom == "To‘langan" %}
 
-                            <div class="product-row">
+                    <div class="status paid">
+                        ✓ To‘langan
+                    </div>
 
-                                <div class="product-image">
+                {% elif order.maqom == "Tayyorlanmoqda" %}
 
-                                    {% if item.product.image %}
+                    <div class="status processing">
+                        📦 Tayyorlanmoqda
+                    </div>
 
-                                        <img src="{{ item.product.image.url }}"
-                                             alt="{{ item.product.name }}">
+                {% elif order.maqom == "Yetkazilmoqda" %}
 
-                                    {% else %}
+                    <div class="status shipping">
+                        🚚 Yetkazilmoqda
+                    </div>
 
-                                        <i class="fa-solid fa-box"></i>
+                {% elif order.maqom == "Yetkazildi" %}
 
-                                    {% endif %}
+                    <div class="status delivered">
+                        ✓ Yetkazildi
+                    </div>
 
-                                </div>
+                {% elif order.maqom == "Bekor qilingan" %}
+
+                    <div class="status cancelled">
+                        ✕ Bekor qilingan
+                    </div>
+
+                {% else %}
+
+                    <div class="status pending">
+                        {{ order.maqom }}
+                    </div>
+
+                {% endif %}
+
+            </div>
 
 
-                                <div class="product-info">
+            <!-- BODY -->
 
-                                    <div class="product-name">
-                                        {{ item.product.name }}
-                                    </div>
-
-                                    <div class="product-quantity">
-                                        Soni: {{ item.quantity }}
-                                    </div>
-
-                                </div>
+            <div class="order-body">
 
 
-                                {% if item.price %}
+                <!-- MIJOZ MA'LUMOTLARI -->
 
-                                    <div class="order-price">
-                                        {{ item.price|floatformat:0 }} so‘m
-                                    </div>
+                <div class="customer-box">
+
+                    <div class="customer-title">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        &nbsp; Mijoz ma’lumotlari
+
+                    </div>
+
+
+                    <!-- MIJOZ -->
+
+                    <div class="customer-row">
+
+                        <div class="customer-icon">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+                        <div class="customer-content">
+
+                            <div class="customer-label">
+                                Mijoz
+                            </div>
+
+                            <div class="customer-value">
+
+                                {% if order.mijoz_nomi %}
+
+                                    {{ order.mijoz_nomi }}
+
+                                {% else %}
+
+                                    Ma'lumot kiritilmagan
 
                                 {% endif %}
 
                             </div>
 
-                            {% if not forloop.last %}
-                                <div style="height:10px;"></div>
-                            {% endif %}
+                        </div>
 
-                        {% endfor %}
+                    </div>
 
-                    {% else %}
 
-                        <div class="product-row">
+                    <!-- TELEFON -->
 
-                            <div class="product-image">
-                                <i class="fa-solid fa-box"></i>
-                            </div>
+                    <div class="customer-row">
 
-                            <div class="product-info">
+                        <div class="customer-icon">
 
-                                <div class="product-name">
-                                    Buyurtma #{{ order.id }}
-                                </div>
-
-                                <div class="product-quantity">
-                                    Buyurtma ma'lumotlari
-                                </div>
-
-                            </div>
+                            <i class="fa-solid fa-phone"></i>
 
                         </div>
 
-                    {% endif %}
+                        <div class="customer-content">
 
+                            <div class="customer-label">
+                                Telefon
+                            </div>
 
-                    <div class="divider"></div>
+                            <div class="customer-value">
 
+                                {% if order.telefon_raqami %}
 
-                    <!-- TOTAL -->
+                                    {{ order.telefon_raqami }}
 
-                    <div class="order-bottom">
+                                {% else %}
 
-                        <div class="total-label">
-                            Jami summa
-                        </div>
+                                    Telefon kiritilmagan
 
-                        <div class="total-price">
+                                {% endif %}
 
-                            {% if order.total_price %}
-                                {{ order.total_price|floatformat:0 }} so‘m
-
-                            {% elif order.total %}
-                                {{ order.total|floatformat:0 }} so‘m
-
-                            {% elif order.amount %}
-                                {{ order.amount|floatformat:0 }} so‘m
-
-                            {% else %}
-                                —
-                            {% endif %}
+                            </div>
 
                         </div>
 
                     </div>
 
 
-                    <!-- BUTTONS -->
+                    <!-- MANZIL -->
 
-                    <div class="order-buttons">
+                    <div class="customer-row">
 
-                        {% if order.id %}
+                        <div class="customer-icon">
 
-                            <a href="{% url 'buyurtmalar_detail' order.id %}"
-                               class="order-btn details-btn">
+                            <i class="fa-solid fa-location-dot"></i>
 
-                                <i class="fa-solid fa-eye"></i>
-                                &nbsp; Batafsil
+                        </div>
 
-                            </a>
+                        <div class="customer-content">
 
-                        {% endif %}
+                            <div class="customer-label">
+                                Manzil
+                            </div>
 
+                            <div class="customer-value">
 
-                        {% if order.status == "pending" %}
+                                {% if order.manzil %}
 
-                            <a href="{% url 'payment_page' order.id %}"
-                               class="order-btn pay-btn">
+                                    {{ order.manzil }}
 
-                                <i class="fa-solid fa-credit-card"></i>
-                                &nbsp; To'lov qilish
+                                {% else %}
 
-                            </a>
+                                    Manzil kiritilmagan
 
-                        {% endif %}
+                                {% endif %}
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
+
+                <!-- DIVIDER -->
+
+                <div class="divider"></div>
+
+
+                <!-- TOTAL -->
+
+                <div class="order-bottom">
+
+                    <div class="total-label">
+                        Umumiy summa
+                    </div>
+
+                    <div class="total-price">
+
+                        {{ order.umumiy_narx|floatformat:0 }} so‘m
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="order-buttons">
+
+
+                    <!-- DETAIL -->
+
+                    <a
+                        href="{% url 'buyurtmalar_detail' order.id %}"
+                        class="order-btn details-btn"
+                    >
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        &nbsp; Batafsil
+
+                    </a>
+
+
+                    <!-- PAYMENT -->
+
+                    {% if order.maqom == "Kutilmoqda" %}
+
+                        <a
+                            href="{% url 'payment_page' order.id %}"
+                            class="order-btn pay-btn"
+                        >
+
+                            <i class="fa-solid fa-credit-card"></i>
+
+                            &nbsp; To‘lov qilish
+
+                        </a>
+
+                    {% endif %}
+
+
+                </div>
+
+
             </div>
-
-        {% endfor %}
-
-
-    {% else %}
-
-        <!-- EMPTY -->
-
-        <div class="empty">
-
-            <div class="empty-icon">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </div>
-
-            <h3>
-                Hali buyurtmalar yo‘q
-            </h3>
-
-            <p>
-                Xarid qilgan mahsulotlaringiz shu yerda ko‘rinadi.
-            </p>
-
-            <a href="{% url 'index' %}" class="shop-btn">
-
-                <i class="fa-solid fa-shop"></i>
-
-                Xarid qilish
-
-            </a>
 
         </div>
 
-    {% endif %}
+
+    {% endfor %}
+
+
+{% else %}
+
+
+    <!-- EMPTY -->
+
+    <div class="empty">
+
+        <div class="empty-icon">
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+        </div>
+
+        <h3>
+            Hali buyurtmalar yo‘q
+        </h3>
+
+        <p>
+            Xarid qilgan mahsulotlaringiz shu yerda ko‘rinadi.
+        </p>
+
+        <a href="{% url 'index' %}" class="shop-btn">
+
+            <i class="fa-solid fa-shop"></i>
+
+            Xarid qilish
+
+        </a>
+
+    </div>
+
+
+{% endif %}
+
 
 </main>
 
@@ -762,6 +820,7 @@
 <!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
+
 
     <a href="{% url 'index' %}" class="bottom-item">
 
@@ -807,7 +866,10 @@
 
     </a>
 
+
 </nav>
 
+
 </body>
+
 </html>

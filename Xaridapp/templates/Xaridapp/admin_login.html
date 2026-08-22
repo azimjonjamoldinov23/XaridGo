@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XaridGo Admin Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(124, 0, 255, .22),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(183, 45, 255, .20),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f8f8fb,
+                    #eeeeF5
+                );
+
+            color: #222;
+        }
+
+        /* ORQA FON YORQIN NUQTALAR */
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+
+            background: rgba(126, 0, 255, .12);
+
+            filter: blur(80px);
+
+            top: -100px;
+            left: -80px;
+
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+
+            background: rgba(180, 40, 255, .12);
+
+            filter: blur(90px);
+
+            bottom: -120px;
+            right: -80px;
+
+            pointer-events: none;
+        }
+
+        /* LOGIN BOX */
+
+        .login-box {
+            position: relative;
+            z-index: 2;
+
+            width: 400px;
+            padding: 42px 38px;
+
+            border-radius: 28px;
+
+            background: rgba(255, 255, 255, .92);
+
+            border: 1px solid rgba(255, 255, 255, .8);
+
+            box-shadow:
+                0 25px 70px rgba(75, 0, 120, .15),
+                0 8px 25px rgba(0, 0, 0, .08);
+
+            backdrop-filter: blur(20px);
+        }
+
+        /* LOGO */
+
+        .logo-icon {
+            width: 72px;
+            height: 72px;
+
+            margin: 0 auto 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+
+            background: linear-gradient(
+                135deg,
+                #7200ff,
+                #b52cff
+            );
+
+            color: white;
+
+            font-size: 34px;
+
+            box-shadow:
+                0 12px 30px rgba(126, 0, 255, .30);
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 30px;
+            font-weight: 900;
+
+            background: linear-gradient(
+                135deg,
+                #6500ff,
+                #b52cff
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            text-align: center;
+
+            color: #888;
+
+            font-size: 14px;
+
+            margin-bottom: 30px;
+        }
+
+        /* LABEL */
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #333;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        /* INPUT */
+
+        input {
+            width: 100%;
+            height: 50px;
+
+            margin-bottom: 20px;
+
+            padding: 0 16px;
+
+            border-radius: 13px;
+
+            border: 1px solid #e0e0e8;
+
+            background: #f7f7fa;
+
+            color: #222;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: .2s;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        input:focus {
+            background: white;
+
+            border-color: #8300ff;
+
+            box-shadow:
+                0 0 0 4px rgba(131, 0, 255, .08);
+        }
+
+        /* BUTTON */
+
+        button {
+            width: 100%;
+            height: 52px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: linear-gradient(
+                135deg,
+                #7000ff,
+                #b329ff
+            );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(119, 0, 255, .25);
+
+            transition: .2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 15px 32px rgba(119, 0, 255, .32);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* ERROR */
+
+        .error {
+            background: #fff1f3;
+
+            border: 1px solid #ffd1d8;
+
+            color: #e63950;
+
+            padding: 12px 14px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+
+            text-align: center;
+        }
+
+        /* PASTKI MATN */
+
+        .security {
+            margin-top: 22px;
+
+            text-align: center;
+
+            color: #999;
+
+            font-size: 12px;
+        }
+
+        .security span {
+            color: #7600ff;
+
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 500px) {
+
+            .login-box {
+                width: calc(100% - 30px);
+
+                padding: 35px 25px;
+
+                border-radius: 24px;
+            }
+
+            .logo {
+                font-size: 27px;
+            }
+
+            .logo-icon {
+                width: 65px;
+                height: 65px;
+
+                font-size: 30px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <!-- LOGO -->
+
+        <div class="logo-icon">
+            🛒
+        </div>
+
+        <div class="logo">
+            XaridGo
+        </div>
+
+        <div class="subtitle">
+            Admin boshqaruv paneli
+        </div>
+
+
+        <!-- XATO -->
+
+        {% if error %}
+
+            <div class="error">
+                ⚠️ {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- LOGIN FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>
+                Admin login
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Loginni kiriting"
+                autocomplete="username"
+                required
+            >
+
+
+            <label>
+                Parol
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Parolni kiriting"
+                autocomplete="current-password"
+                required
+            >
+
+
+            <button type="submit">
+                🔐 Admin panelga kirish
+            </button>
+
+        </form>
+
+
+        <div class="security">
+            🔒 Faqat <span>ruxsat berilgan admin</span> uchun
+        </div>
+
+    </div>
+
+</body>
+
+</html>

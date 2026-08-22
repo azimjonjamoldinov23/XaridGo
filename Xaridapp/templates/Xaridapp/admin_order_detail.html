@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buyurtma #{{ order.id }} | XaridGo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        /* HEADER */
+        .header {
+            height: 76px;
+            padding: 0 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: linear-gradient(
+                135deg,
+                #7200ff,
+                #a100ff
+            );
+
+            color: white;
+
+            box-shadow:
+                0 8px 25px rgba(112, 0, 255, .18);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .admin-user {
+            background: rgba(255,255,255,.15);
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 20px 60px;
+        }
+
+        /* BACK BUTTON */
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 11px 17px;
+
+            background: white;
+            color: #7200ff;
+
+            border-radius: 12px;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,.06);
+
+            transition: .2s;
+        }
+
+        .back:hover {
+            transform: translateX(-3px);
+            box-shadow: 0 7px 20px rgba(114,0,255,.12);
+        }
+
+        /* TITLE */
+        .page-title {
+            margin: 30px 0 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #222;
+            font-size: 30px;
+        }
+
+        .order-number {
+            color: #7200ff;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        /* CARD */
+        .card {
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            border: 1px solid #e9e9ef;
+
+            box-shadow:
+                0 8px 30px rgba(0,0,0,.06);
+
+            transition: .2s;
+        }
+
+        .card:hover {
+            box-shadow:
+                0 12px 35px rgba(114,0,255,.09);
+        }
+
+        .card h2 {
+            margin: 0 0 20px;
+
+            font-size: 20px;
+
+            color: #7200ff;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        /* ROW */
+        .row {
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eeeeF3;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            display: block;
+
+            color: #8b8b96;
+
+            font-size: 13px;
+
+            margin-bottom: 7px;
+        }
+
+        .value {
+            display: block;
+
+            color: #222;
+
+            font-size: 16px;
+
+            font-weight: 600;
+        }
+
+        /* PRICE */
+        .price {
+            color: #7200ff;
+
+            font-size: 27px;
+
+            font-weight: 800;
+        }
+
+        /* CURRENT STATUS */
+        .current {
+            display: inline-flex;
+
+            padding: 9px 15px;
+
+            border-radius: 20px;
+
+            background: #f0e5ff;
+
+            color: #7200ff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        /* SELECT */
+        select {
+            width: 100%;
+
+            height: 50px;
+
+            padding: 0 14px;
+
+            background: #f8f8fb;
+
+            border: 1px solid #dedee7;
+
+            border-radius: 12px;
+
+            color: #222;
+
+            font-size: 15px;
+
+            outline: none;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        select:focus {
+            border-color: #7200ff;
+
+            box-shadow:
+                0 0 0 3px rgba(114,0,255,.10);
+        }
+
+        /* BUTTON */
+        button {
+            width: 100%;
+
+            height: 50px;
+
+            margin-top: 15px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #7200ff,
+                #a100ff
+            );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+            box-shadow:
+                0 7px 20px rgba(114,0,255,.20);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(114,0,255,.28);
+        }
+
+        button:active {
+            transform: scale(.98);
+        }
+
+        /* STATUS FORM */
+        .status-form {
+            margin-top: 22px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #eeeeF3;
+        }
+
+        .status-form .label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* INFO BADGE */
+        .order-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 7px;
+
+            padding: 9px 14px;
+
+            margin-bottom: 5px;
+
+            border-radius: 20px;
+
+            background: #f3eaff;
+
+            color: #7200ff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 750px) {
+
+            .header {
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .admin-user {
+                padding: 8px 11px;
+                font-size: 12px;
+            }
+
+            .container {
+                padding: 25px 14px 50px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .header {
+                height: 65px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .admin-user {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+    <div class="logo">
+        🛒 XaridGo Admin
+    </div>
+
+    <div class="admin-user">
+        👤 {{ request.user.username }}
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <!-- ORQAGA -->
+    <a
+        href="{% url 'admin_orders' %}"
+        class="back"
+    >
+        ← Buyurtmalarga qaytish
+    </a>
+
+
+    <!-- TITLE -->
+    <h1 class="page-title">
+
+        📦
+        Buyurtma
+        <span class="order-number">
+            #{{ order.id }}
+        </span>
+
+    </h1>
+
+
+    <div class="grid">
+
+        <!-- MIJOZ MA'LUMOTLARI -->
+        <div class="card">
+
+            <h2>
+                👤
+                Mijoz ma'lumotlari
+            </h2>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Mijoz
+                </span>
+
+                <span class="value">
+                    {{ order.mijoz_nomi }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Telefon
+                </span>
+
+                <span class="value">
+                    {{ order.telefon_raqami }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Manzil
+                </span>
+
+                <span class="value">
+                    {{ order.manzil }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Buyurtma vaqti
+                </span>
+
+                <span class="value">
+                    {{ order.yaratilgan_at|date:"d.m.Y H:i" }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUYURTMA -->
+        <div class="card">
+
+            <h2>
+                🛒
+                Buyurtma
+            </h2>
+
+
+            <div class="order-badge">
+                📦 Buyurtma #{{ order.id }}
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Buyurtma raqami
+                </span>
+
+                <span class="value">
+                    #{{ order.id }}
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Umumiy summa
+                </span>
+
+                <div class="price">
+                    {{ order.umumiy_narx }} so'm
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Hozirgi holat
+                </span>
+
+                <span class="current">
+                    {{ order.maqom }}
+                </span>
+
+            </div>
+
+
+            <!-- STATUS O'ZGARTIRISH -->
+            <div class="status-form">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <span class="label">
+                        Buyurtma holatini o'zgartirish
+                    </span>
+
+
+                    <select name="maqom">
+
+                        {% for value, label in status_choices %}
+
+                            <option
+                                value="{{ value }}"
+                                {% if order.maqom == value %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <button type="submit">
+                        💾 Holatni saqlash
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1065 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XaridGo — Admin Panel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f7;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 255px;
+            background: #ffffff;
+            border-right: 1px solid #e8e8eb;
+            padding: 22px 15px;
+            z-index: 1000;
+            transition: .3s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px 25px;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,#7b2cff,#a855f7);
+            color: white;
+            box-shadow: 0 7px 20px rgba(123,44,255,.25);
+        }
+
+        .logo span {
+            background: linear-gradient(90deg,#7028ff,#a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #999;
+            font-weight: 700;
+            padding: 0 12px;
+            margin: 15px 0 8px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin: 4px 0;
+            border-radius: 12px;
+            color: #65656c;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #f1eaff;
+            color: #7028ff;
+        }
+
+        .menu-icon {
+            width: 23px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 255px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            background: rgba(255,255,255,.92);
+            border-bottom: 1px solid #e8e8eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            backdrop-filter: blur(15px);
+        }
+
+        .top-title h1 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .top-title p {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-button {
+            width: 42px;
+            height: 42px;
+            border: 1px solid #eee;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: .2s;
+        }
+
+        .icon-button:hover {
+            border-color: #8b4cff;
+            transform: translateY(-2px);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 8px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#7028ff,#c084fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+            display: block;
+        }
+
+        .profile-info span {
+            color: #999;
+            font-size: 11px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg,#7028ff,#9b4dff,#c084fc);
+            border-radius: 20px;
+            padding: 27px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(112,40,255,.18);
+        }
+
+        .welcome:after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            right: 30px;
+            top: -120px;
+            background: rgba(255,255,255,.12);
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            opacity: .88;
+            font-size: 14px;
+        }
+
+        .welcome-icon {
+            font-size: 65px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #ededf0;
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: .25s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0,0,0,.06);
+        }
+
+        .stat-left p {
+            color: #8b8b93;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-left h3 {
+            font-size: 29px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .purple {
+            background: #f0e7ff;
+        }
+
+        .orange {
+            background: #fff1dc;
+        }
+
+        .green {
+            background: #e1f8ec;
+        }
+
+        /* ================= GRID ================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 20px;
+            margin-top: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ededf0;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 19px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+        }
+
+        .view-all {
+            color: #7028ff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= ORDERS ================= */
+
+        .order-row {
+            display: grid;
+            grid-template-columns: 70px 1fr 120px 110px;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 13px;
+        }
+
+        .order-row:last-child {
+            border-bottom: 0;
+        }
+
+        .order-id {
+            font-weight: 800;
+            color: #7028ff;
+        }
+
+        .customer strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .customer span {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .price {
+            font-weight: 800;
+        }
+
+        .status {
+            display: inline-flex;
+            justify-content: center;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .pending {
+            background: #fff2d9;
+            color: #d88900;
+        }
+
+        .paid {
+            background: #e2f8eb;
+            color: #149447;
+        }
+
+        .delivered {
+            background: #e7e1ff;
+            color: #6731db;
+        }
+
+        .cancelled {
+            background: #ffe4e4;
+            color: #e43b3b;
+        }
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .quick-actions {
+            padding: 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .quick {
+            border: 1px solid #eee;
+            border-radius: 14px;
+            padding: 18px 12px;
+            text-align: center;
+            transition: .2s;
+            background: #fff;
+        }
+
+        .quick:hover {
+            border-color: #b78cff;
+            background: #faf7ff;
+            transform: translateY(-2px);
+        }
+
+        .quick-icon {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .quick strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .quick span {
+            color: #999;
+            font-size: 10px;
+        }
+
+        /* ================= PRODUCT TABLE ================= */
+
+        .products-card {
+            margin-top: 20px;
+        }
+
+        .product-row {
+            display: grid;
+            grid-template-columns: 1fr 130px 100px;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f2;
+        }
+
+        .product-row:last-child {
+            border: none;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .product-price {
+            font-weight: 800;
+            color: #7028ff;
+        }
+
+        .product-stock {
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        .mobile-menu {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        @media(max-width: 1000px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .top-title {
+                margin-left: 10px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 650px) {
+
+            .content {
+                padding: 15px;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+
+            .welcome h2 {
+                font-size: 20px;
+            }
+
+            .welcome-icon {
+                font-size: 45px;
+            }
+
+            .order-row {
+                grid-template-columns: 55px 1fr 90px;
+            }
+
+            .order-row .price {
+                display: none;
+            }
+
+            .product-row {
+                grid-template-columns: 1fr 90px;
+            }
+
+            .product-stock {
+                display: none;
+            }
+        }
+
+        /* ================= TOAST ================= */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #222;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon">🛒</div>
+        <span>XaridGo</span>
+    </div>
+
+    <div class="menu-title">Boshqaruv</div>
+
+    <nav class="menu">
+
+        <a href="{% url 'admin_dashboard' %}" class="active">
+            <div class="menu-icon">📊</div>
+            Dashboard
+        </a>
+
+        <a href="{% url 'admin_orders' %}">
+            <div class="menu-icon">📦</div>
+            Buyurtmalar
+        </a>
+
+        <a href="#products">
+            <div class="menu-icon">🛍️</div>
+            Mahsulotlar
+        </a>
+
+    </nav>
+
+    <div class="menu-title">Tezkor</div>
+
+    <nav class="menu">
+
+        <a href="/">
+            <div class="menu-icon">🏠</div>
+            Do‘konga o'tish
+        </a>
+
+        <a href="#" onclick="showToast('XaridGo sozlamalari')">
+            <div class="menu-icon">⚙️</div>
+            Sozlamalar
+        </a>
+
+        <a href="{% url 'admin_logout' %}">
+            <div class="menu-icon">🚪</div>
+            Chiqish
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div style="display:flex;align-items:center;">
+
+            <button class="mobile-menu" onclick="toggleSidebar()">
+                ☰
+            </button>
+
+            <div class="top-title">
+                <h1>Boshqaruv paneli</h1>
+                <p>XaridGo do‘koningizni boshqaring</p>
+            </div>
+
+        </div>
+
+        <div class="top-actions">
+
+            <button class="icon-button"
+                    onclick="showToast('Bildirishnomalar')">
+                🔔
+            </button>
+
+            <div class="profile">
+
+                <div class="avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+                <div class="profile-info">
+                    <strong>{{ request.user.username }}</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <section class="content">
+
+        <!-- WELCOME -->
+
+        <div class="welcome">
+
+            <div>
+                <h2>Xush kelibsiz, {{ request.user.username }} 👋</h2>
+
+                <p>
+                    XaridGo do‘koningiz boshqaruv paneliga xush kelibsiz.
+                </p>
+            </div>
+
+            <div class="welcome-icon">
+                🛒
+            </div>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-left">
+
+                    <p>JAMI BUYURTMALAR</p>
+
+                    <h3>
+                        {{ orders_count }}
+                    </h3>
+
+                </div>
+
+                <div class="stat-icon purple">
+                    📦
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-left">
+
+                    <p>KUTILAYOTGAN</p>
+
+                    <h3>
+                        {{ pending_count }}
+                    </h3>
+
+                </div>
+
+                <div class="stat-icon orange">
+                    ⏳
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-left">
+
+                    <p>MAHSULOTLAR</p>
+
+                    <h3>
+                        {{ products_count }}
+                    </h3>
+
+                </div>
+
+                <div class="stat-icon green">
+                    🛍️
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- ORDERS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>So‘nggi buyurtmalar</h3>
+
+                    <a href="{% url 'admin_orders' %}"
+                       class="view-all">
+                        Barchasini ko‘rish →
+                    </a>
+
+                </div>
+
+
+                {% for order in orders|slice:":6" %}
+
+                <div class="order-row">
+
+                    <div class="order-id">
+                        #{{ order.id }}
+                    </div>
+
+                    <div class="customer">
+
+                        <strong>
+                            {{ order.mijoz_nomi }}
+                        </strong>
+
+                        <span>
+                            {{ order.telefon_raqami }}
+                        </span>
+
+                    </div>
+
+                    <div class="price">
+
+                        {{ order.umumiy_narx }} so‘m
+
+                    </div>
+
+                    <div>
+
+                        {% if order.maqom == "Kutilmoqda" or order.maqom == "To'lov kutilmoqda" %}
+
+                            <span class="status pending">
+                                {{ order.maqom }}
+                            </span>
+
+                        {% elif order.maqom == "To'langan" %}
+
+                            <span class="status paid">
+                                To‘langan
+                            </span>
+
+                        {% elif order.maqom == "Yetkazildi" %}
+
+                            <span class="status delivered">
+                                Yetkazildi
+                            </span>
+
+                        {% elif order.maqom == "Bekor qilindi" %}
+
+                            <span class="status cancelled">
+                                Bekor qilindi
+                            </span>
+
+                        {% else %}
+
+                            <span class="status pending">
+                                {{ order.maqom }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div style="padding:40px;text-align:center;color:#999;">
+                    Hozircha buyurtmalar yo‘q 📦
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>Tezkor boshqaruv</h3>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a class="quick"
+                       href="{% url 'admin_orders' %}">
+
+                        <div class="quick-icon">
+                            📦
+                        </div>
+
+                        <strong>Buyurtmalar</strong>
+
+                        <span>
+                            Boshqarish
+                        </span>
+
+                    </a>
+
+
+                    <a class="quick"
+                       href="/">
+
+                        <div class="quick-icon">
+                            🏠
+                        </div>
+
+                        <strong>Do‘kon</strong>
+
+                        <span>
+                            Saytni ko‘rish
+                        </span>
+
+                    </a>
+
+
+                    <a class="quick"
+                       href="#products">
+
+                        <div class="quick-icon">
+                            🛍️
+                        </div>
+
+                        <strong>Mahsulotlar</strong>
+
+                        <span>
+                            Ko‘rish
+                        </span>
+
+                    </a>
+
+
+                    <a class="quick"
+                       href="#"
+                       onclick="showToast('Tez orada qo‘shiladi')">
+
+                        <div class="quick-icon">
+                            📊
+                        </div>
+
+                        <strong>Statistika</strong>
+
+                        <span>
+                            Hisobotlar
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTS -->
+
+        <div class="card products-card" id="products">
+
+            <div class="card-header">
+
+                <h3>Mahsulotlar</h3>
+
+                <span class="view-all">
+                    {{ products_count }} ta mahsulot
+                </span>
+
+            </div>
+
+
+            {% for product in products|slice:":8" %}
+
+            <div class="product-row">
+
+                <div class="product-name">
+
+                    {{ product.name }}
+
+                </div>
+
+                <div class="product-price">
+
+                    {{ product.price }} so‘m
+
+                </div>
+
+                <div class="product-stock">
+
+                    {% if product.stock %}
+                        {{ product.stock }} dona
+                    {% else %}
+                        Mavjud
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div style="padding:40px;text-align:center;color:#999;">
+                Mahsulotlar mavjud emas 🛍️
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div style="
+            text-align:center;
+            padding:30px 10px 10px;
+            color:#999;
+            font-size:11px;
+        ">
+
+            © 2026 XaridGo • Admin Panel
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.innerText = message;
+
+        toast.classList.add("show");
+
+        setTimeout(function () {
+
+            toast.classList.remove("show");
+
+        }, 2200);
+
+    }
+
+
+    document.addEventListener("click", function(e) {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const button =
+            document.querySelector(".mobile-menu");
+
+        if (
+            window.innerWidth <= 1000 &&
+            sidebar.classList.contains("show") &&
+            !sidebar.contains(e.target) &&
+            !button.contains(e.target)
+        ) {
+
+            sidebar.classList.remove("show");
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
