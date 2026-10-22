@@ -988,14 +988,14 @@
                         </span>
 
                         <h1 class="banner-title">
-                            MAKTAB<br>
-                            BOZORI
+                            YANGI<br>
+                            TAKLIFLAR
                         </h1>
 
                         <p class="banner-subtitle">
-                            XaridGo'da maxsus chegirmalar!
-                            Bozordan arzon narxlarda xarid qiling
-                            va oilaviy byudjetingizni tejang.
+                            Kundalik xaridlaringiz uchun qulay narxlar va
+                            sifatli mahsulotlar XaridGo’da. Sevimli
+                            mahsulotlaringizni bugunoq tanlang!
                         </p>
 
                         <div class="banner-price-tag">
@@ -1018,7 +1018,7 @@
                     <img
                         src="{% static 'images/aksessuarlar_banner.png' %}"
                         class="banner-img-right"
-                        alt="Maktab Bozori"
+                        alt="XaridGo haftalik takliflari"
                         onerror="this.style.display='none';"
                     >
 
@@ -1175,7 +1175,8 @@
 
         <a
             href="{% url 'index' %}"
-            class="category-pill"
+            class="category-pill{% if not selected_category %} selected-category{% endif %}"
+            {% if not selected_category %}style="background:#7000ff;color:#fff;box-shadow:0 4px 12px rgba(112,0,255,.22);" aria-current="page"{% endif %}
         >
             🔥 Barchasi
         </a>
@@ -1183,7 +1184,8 @@
 
         <a
             href="{% url 'index' %}?category=ichimliklar"
-            class="category-pill"
+            class="category-pill{% if selected_category == 'ichimliklar' %} selected-category{% endif %}"
+            {% if selected_category == 'ichimliklar' %}style="background:#7000ff;color:#fff;box-shadow:0 4px 12px rgba(112,0,255,.22);" aria-current="page"{% endif %}
         >
             🥤 Ichimliklar
         </a>
@@ -1191,7 +1193,8 @@
 
         <a
             href="{% url 'index' %}?category=elektronika"
-            class="category-pill"
+            class="category-pill{% if selected_category == 'elektronika' %} selected-category{% endif %}"
+            {% if selected_category == 'elektronika' %}style="background:#7000ff;color:#fff;box-shadow:0 4px 12px rgba(112,0,255,.22);" aria-current="page"{% endif %}
         >
             📱 Elektronika
         </a>
@@ -1199,7 +1202,8 @@
 
         <a
             href="{% url 'index' %}?category=kiyim"
-            class="category-pill"
+            class="category-pill{% if selected_category == 'kiyim' %} selected-category{% endif %}"
+            {% if selected_category == 'kiyim' %}style="background:#7000ff;color:#fff;box-shadow:0 4px 12px rgba(112,0,255,.22);" aria-current="page"{% endif %}
         >
             👕 Kiyim-kechak
         </a>
@@ -1207,7 +1211,8 @@
 
         <a
             href="{% url 'index' %}?category=oziq-ovqat"
-            class="category-pill"
+            class="category-pill{% if selected_category == 'oziq-ovqat' %} selected-category{% endif %}"
+            {% if selected_category == 'oziq-ovqat' %}style="background:#7000ff;color:#fff;box-shadow:0 4px 12px rgba(112,0,255,.22);" aria-current="page"{% endif %}
         >
             🍎 Oziq-ovqat
         </a>

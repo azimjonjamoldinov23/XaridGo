@@ -26,7 +26,8 @@ def index(request):
         request,
         "Xaridapp/index.html",
         {
-            "products": products
+            "products": products,
+            "selected_category": category_slug,
         }
     )
 
