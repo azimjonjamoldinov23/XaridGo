@@ -34,6 +34,7 @@ urlpatterns = [
 
     path("buyurtmalar/", views.orders, name="buyurtmalar"),
     path("buyurtmalar/<int:pk>/", views.order_detail, name="buyurtmalar_detail"),
+    path("buyurtmani-kuzatish/", views.order_tracking, name="order_tracking"),
     path("create-order/", views.create_order, name="create_order"),
 
     path("admin-panel/login/", views.admin_login, name="admin_login"),
@@ -43,4 +44,8 @@ urlpatterns = [
     path("admin-panel/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),
     path("orders/", views.orders, name="orders"),
     path("admin-panel/orders/status/<int:order_id>/", views.order_status_update, name="order_status_update"),
+    path("admin-panel/products/", views.admin_products, name="admin_products"),
+    path("admin-panel/products/add/", views.admin_product_create, name="admin_product_create"),
+    path("admin-panel/products/<int:product_id>/edit/", views.admin_product_edit, name="admin_product_edit"),
+    path("admin-panel/products/<int:product_id>/delete/", views.admin_product_delete, name="admin_product_delete"),
 ]

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Buyurtmani kuzatish — XaridGo</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f5f5f8;color:#24212b;font:15px Arial,sans-serif}.wrap{max-width:640px;margin:7vh auto;padding:18px}.card{background:#fff;border:1px solid #e9e6ef;border-radius:20px;padding:28px;box-shadow:0 12px 40px #2920350c}a{color:#7000ff;text-decoration:none}.brand{font-weight:800;font-size:23px;color:#7000ff}.intro{color:#6e6b75;margin:8px 0 22px}label{display:block;font-weight:700;margin:15px 0 7px}input{width:100%;padding:13px;border:1px solid #ddd8e5;border-radius:10px;font:inherit}button{margin-top:18px;width:100%;padding:13px;border:0;border-radius:10px;background:#7000ff;color:white;font-size:15px;font-weight:700;cursor:pointer}.error{background:#fff0f0;color:#b42318;border-radius:9px;padding:12px;margin-top:14px}.result{margin-top:22px;padding:18px;background:#f6f1ff;border-radius:12px}.status{display:inline-block;margin-top:8px;padding:7px 12px;background:#e7dcff;color:#5b19bd;border-radius:30px;font-weight:700}@media(max-width:500px){.wrap{margin:2vh auto}.card{padding:20px}}
+  </style>
+</head>
+<body><main class="wrap"><section class="card">
+  <a class="brand" href="{% url 'index' %}">XaridGo</a>
+  <h1 style="margin:22px 0 0">Buyurtmani kuzatish</h1>
+  <p class="intro">Buyurtma raqami va buyurtmada ko‘rsatilgan telefon raqamini kiriting.</p>
+  <form method="post">{% csrf_token %}
+    <label for="order_id">Buyurtma raqami</label><input id="order_id" name="order_id" inputmode="numeric" placeholder="Masalan: 125" required>
+    <label for="phone">Telefon raqami</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+998 90 123 45 67" required>
+    <button type="submit">Holatni tekshirish</button>
+  </form>
+  {% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+  {% if order %}<div class="result"><strong>Buyurtma #{{ order.id }}</strong><p style="margin:10px 0 0">Sana: {{ order.yaratilgan_at|date:"d.m.Y H:i" }}</p><span class="status">{{ order.get_maqom_display }}</span></div>{% endif %}
+  <p style="margin-top:22px"><a href="{% url 'index' %}">← Do‘konga qaytish</a></p>
+</section></main></body></html>

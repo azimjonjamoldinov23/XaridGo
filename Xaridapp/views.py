@@ -7,9 +7,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.db.models import Q
+from django.db import transaction
 
-from .models import Product, Order, Notification, UserProfile, Category
-from .forms import SignUpForm, CustomLoginForm
+from .models import Product, Order, OrderItem, Notification, UserProfile, Category
+from .forms import SignUpForm, CustomLoginForm, ProductForm
 
 
 # ============================================================
@@ -19,12 +20,14 @@ from .forms import SignUpForm, CustomLoginForm
 def index(request):
     category_slug = request.GET.get("category")
 
+    products = Product.objects.select_related("category").all()
     if category_slug:
-        products = Product.objects.filter(
-            category__slug=category_slug
-        )
-    else:
-        products = Product.objects.all()
+        products = products.filter(category__slug=category_slug)
+    if request.GET.get("available") == "1":
+        products = products.filter(is_available=True, stock__gt=0)
+    sort = request.GET.get("sort", "newest")
+    sort_fields = {"price_asc": "price", "price_desc": "-price", "name": "name", "newest": "-created_at"}
+    products = products.order_by(sort_fields.get(sort, "-created_at"))
 
     return render(
         request,
@@ -32,6 +35,8 @@ def index(request):
         {
             "products": products,
             "selected_category": category_slug,
+            "sort": sort,
+            "available_only": request.GET.get("available") == "1",
         }
     )
 
@@ -49,6 +54,7 @@ def product_detail_view(request, pk):
         {
             "product": product,
             "categories": Category.objects.all(),
+            "gallery_images": product.gallery_images.all(),
         }
     )
 
@@ -200,6 +206,7 @@ def edit_profile(request):
 # ============================================================
 
 @login_required
+@require_POST
 def add_to_cart(request, product_id):
 
     product = get_object_or_404(
@@ -212,7 +219,13 @@ def add_to_cart(request, product_id):
         {}
     )
 
+    if not product.is_available or product.stock < 1:
+        return redirect("product_detail", pk=product.id)
+
     product_id = str(product_id)
+
+    if int(cart.get(product_id, 0) or 0) >= product.stock:
+        return redirect("cart_view")
 
     if product_id in cart:
         cart[product_id] += 1
@@ -293,7 +306,9 @@ def update_cart(request, product_id, action):
     if product_id in cart:
 
         if action == "increase":
-            cart[product_id] += 1
+            product = Product.objects.filter(pk=product_id).first()
+            if product and product.is_available and cart[product_id] < product.stock:
+                cart[product_id] += 1
 
         elif action == "decrease":
 
@@ -327,6 +342,7 @@ def checkout_view(request):
         return redirect("cart_view")
 
     total_price = 0
+    cart_products = []
 
     for product_id, quantity in cart.items():
 
@@ -334,7 +350,7 @@ def checkout_view(request):
             product = Product.objects.get(
                 id=int(product_id)
             )
-
+            cart_products.append((product, int(quantity)))
             total_price += product.price * quantity
 
         except Product.DoesNotExist:
@@ -368,14 +384,50 @@ def checkout_view(request):
                 }
             )
 
-        order = Order.objects.create(
-            user=request.user,
-            mijoz_nomi=mijoz_nomi,
-            telefon_raqami=telefon_raqami,
-            manzil=manzil,
-            umumiy_narx=total_price,
-            maqom="Kutilmoqda"
-        )
+        with transaction.atomic():
+            locked_products = {
+                product.id: product
+                for product in Product.objects.select_for_update().filter(
+                    id__in=[p.id for p, _qty in cart_products]
+                )
+            }
+            unavailable = [
+                product.name for product, quantity in cart_products
+                if product.id not in locked_products
+                or not locked_products[product.id].is_available
+                or locked_products[product.id].stock < quantity
+            ]
+            if unavailable:
+                return render(request, "Xaridapp/checkout.html", {
+                    "total_price": total_price,
+                    "error": "Omborda yetarli mahsulot qolmagan: " + ", ".join(unavailable),
+                })
+            for product, quantity in cart_products:
+                locked = locked_products[product.id]
+                locked.stock -= quantity
+                if locked.stock == 0:
+                    locked.is_available = False
+                    locked.save(update_fields=["stock", "is_available"])
+                else:
+                    locked.save(update_fields=["stock"])
+            order = Order.objects.create(
+                user=request.user,
+                mijoz_nomi=mijoz_nomi,
+                telefon_raqami=telefon_raqami,
+                manzil=manzil,
+                umumiy_narx=total_price,
+                maqom="Kutilmoqda"
+            )
+            OrderItem.objects.bulk_create([
+                OrderItem(
+                    order=order,
+                    product=locked_products[product.id],
+                    product_name=product.name,
+                    unit_price=product.price,
+                    quantity=quantity,
+                )
+                for product, quantity in cart_products
+            ])
 
         request.session["cart"] = {}
         request.session.modified = True
@@ -465,12 +517,20 @@ def search_view(request):
                 query_filter
             ).distinct()
 
+    if request.GET.get("available") == "1":
+        products = products.filter(is_available=True, stock__gt=0)
+    sort = request.GET.get("sort", "newest")
+    sort_fields = {"price_asc": "price", "price_desc": "-price", "name": "name", "newest": "-created_at"}
+    products = products.order_by(sort_fields.get(sort, "-created_at"))
+
     return render(
         request,
         "Xaridapp/search.html",
         {
             "query": query,
-            "products": products
+            "products": products,
+            "sort": sort,
+            "available_only": request.GET.get("available") == "1",
         }
     )
 
@@ -682,6 +742,22 @@ def order_detail(request, pk):
     )
 
 
+def order_tracking(request):
+    order = None
+    error = None
+    if request.method == "POST":
+        raw_id = request.POST.get("order_id", "").strip().lstrip("#")
+        phone = "".join(ch for ch in request.POST.get("phone", "") if ch.isdigit())
+        if raw_id.isdigit() and phone:
+            candidate = Order.objects.filter(pk=int(raw_id)).first()
+            saved_phone = "".join(ch for ch in (candidate.telefon_raqami if candidate else "") if ch.isdigit())
+            if candidate and phone == saved_phone:
+                order = candidate
+        if order is None:
+            error = "Buyurtma topilmadi. Raqam va telefonni tekshiring."
+    return render(request, "Xaridapp/order_tracking.html", {"order": order, "error": error})
+
+
 # ============================================================
 # CREATE ORDER
 # ============================================================
@@ -820,6 +896,55 @@ def admin_dashboard(request):
     )
 
 
+@staff_member_required(login_url="admin_login")
+def admin_products(request):
+    return render(request, "Xaridapp/admin_products.html", {
+        "products": Product.objects.select_related("category").order_by("name"),
+    })
+
+
+@staff_member_required(login_url="admin_login")
+def admin_product_create(request):
+    form = ProductForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and form.is_valid():
+        product = form.save()
+        _save_gallery_images(form, product)
+        return redirect("admin_products")
+    return render(request, "Xaridapp/admin_product_form.html", {"form": form, "title": "Mahsulot qo‘shish"})
+
+
+@staff_member_required(login_url="admin_login")
+def admin_product_edit(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+    if request.method == "POST" and form.is_valid():
+        saved_product = form.save()
+        _save_gallery_images(form, saved_product)
+        return redirect("admin_products")
+    return render(request, "Xaridapp/admin_product_form.html", {
+        "form": form,
+        "title": "Mahsulotni tahrirlash",
+        "product": product,
+        "gallery_images": product.gallery_images.all(),
+    })
+
+
+def _save_gallery_images(form, product):
+    from .models import ProductImage
+    ProductImage.objects.bulk_create([
+        ProductImage(product=product, image=image)
+        for image in form.cleaned_data.get("gallery_images", [])
+    ])
+
+
+@staff_member_required(login_url="admin_login")
+@require_POST
+def admin_product_delete(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    product.delete()
+    return redirect("admin_products")
+
+
 # ============================================================
 # ADMIN LOGOUT
 # ============================================================
@@ -881,9 +1006,7 @@ def admin_order_detail(request, order_id):
         ]
 
         if yangi_maqom in allowed_statuses:
-
-            order.maqom = yangi_maqom
-            order.save()
+            _update_order_status(order, yangi_maqom)
 
         return redirect(
             "admin_order_detail",
@@ -899,6 +1022,21 @@ def admin_order_detail(request, order_id):
         }
     )
 
+
+def _update_order_status(order, new_status):
+    with transaction.atomic():
+        order = Order.objects.select_for_update().get(pk=order.pk)
+        if new_status == "Bekor qilindi" and not order.inventory_restored:
+            for item in order.items.select_related("product"):
+                if item.product_id:
+                    item.product.stock += item.quantity
+                    item.product.is_available = True
+                    item.product.save(update_fields=["stock", "is_available"])
+            order.inventory_restored = True
+        order.maqom = new_status
+        order.save(update_fields=["maqom", "inventory_restored"])
+    return order
+
 @staff_member_required(login_url="admin_login")
 @require_POST
 def order_status_update(request, order_id):
@@ -907,7 +1045,6 @@ def order_status_update(request, order_id):
     allowed_statuses = {value for value, _label in Order.STATUS_CHOICES}
 
     if new_status in allowed_statuses:
-        order.maqom = new_status
-        order.save(update_fields=["maqom"])
+        _update_order_status(order, new_status)
 
     return redirect("admin_order_detail", order_id=order.id)

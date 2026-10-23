@@ -401,7 +401,18 @@ input {
     display: block;
 
     object-fit: contain;
+    cursor: zoom-in;
 }
+
+.gallery-thumbnails { display:flex; gap:9px; overflow-x:auto; margin-top:10px; padding:2px; }
+.gallery-thumbnail { flex:0 0 66px; width:66px; height:66px; border:1px solid #e2dce9; border-radius:9px; padding:4px; background:#fff; cursor:pointer; }
+.gallery-thumbnail img { width:100%; height:100%; object-fit:contain; }
+.gallery-thumbnail.active { border:2px solid #7000ff; }
+
+.image-viewer { position:fixed; inset:0; z-index:5000; display:none; align-items:center; justify-content:center; padding:24px; background:rgba(18,14,26,.88); cursor:zoom-out; }
+.image-viewer.open { display:flex; }
+.image-viewer img { max-width:min(100%,1100px); max-height:90vh; object-fit:contain; border-radius:12px; background:white; }
+.image-viewer button { position:absolute; top:18px; right:22px; width:44px; height:44px; border:0; border-radius:50%; background:white; font-size:26px; cursor:pointer; }
 
 .no-image {
     font-size: 70px;
@@ -1330,13 +1341,19 @@ input {
                     <img
                         src="{{ product.image.url }}"
                         alt="{{ product.name }}"
+                        id="mainProductImage"
                     >
+
+                {% elif gallery_images %}
+
+                    <img src="{{ gallery_images.0.image.url }}" alt="{{ product.name }}" id="mainProductImage">
 
                 {% elif product.image_url %}
 
                     <img
                         src="{{ product.image_url }}"
                         alt="{{ product.name }}"
+                        id="mainProductImage"
                     >
 
                 {% else %}
@@ -1348,6 +1365,13 @@ input {
                 {% endif %}
 
             </div>
+
+            {% if product.image or gallery_images %}
+            <div class="gallery-thumbnails" aria-label="Mahsulot rasmlari">
+                {% if product.image %}<button type="button" class="gallery-thumbnail active" data-image="{{ product.image.url }}" aria-label="Asosiy rasm"><img src="{{ product.image.url }}" alt="" loading="lazy"></button>{% endif %}
+                {% for gallery_image in gallery_images %}<button type="button" class="gallery-thumbnail{% if not product.image and forloop.first %} active{% endif %}" data-image="{{ gallery_image.image.url }}" aria-label="Qo‘shimcha rasm {{ forloop.counter }}"><img src="{{ gallery_image.image.url }}" alt="" loading="lazy"></button>{% endfor %}
+            </div>
+            {% endif %}
 
 
             <!-- RATING UNDER IMAGE -->
@@ -1490,6 +1514,10 @@ input {
 
                 </div>
 
+                <p style="margin:8px 0;color:{% if product.stock and product.is_available %}#16853b{% else %}#b42318{% endif %};font-size:12px;font-weight:700;">
+                    {% if product.stock and product.is_available %}Omborda {{ product.stock }} dona mavjud{% else %}Hozircha mavjud emas{% endif %}
+                </p>
+
 
                 <!-- OLD PRICE -->
 
@@ -1591,9 +1619,10 @@ input {
 >
     {% csrf_token %}
 
-    <button
+                    <button
         type="submit"
         class="cart-button"
+                        {% if not product.stock or not product.is_available %}disabled style="opacity:.5;cursor:not-allowed"{% endif %}
     >
         🛒 &nbsp; Savatga qo‘shish
     </button>
@@ -1838,6 +1867,30 @@ input {
 
     }
 
+</script>
+
+<div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true" aria-label="Mahsulot rasmi">
+    <button type="button" aria-label="Yopish" onclick="closeProductImage()">×</button>
+    <img id="imageViewerContent" src="" alt="{{ product.name }}">
+</div>
+<script>
+    const productImage = document.querySelector(".main-image img");
+    const imageViewer = document.getElementById("imageViewer");
+    document.querySelectorAll(".gallery-thumbnail").forEach(button => button.addEventListener("click", () => {
+        if (productImage) productImage.src = button.dataset.image;
+        document.querySelectorAll(".gallery-thumbnail").forEach(item => item.classList.toggle("active", item === button));
+    }));
+    if (productImage) productImage.addEventListener("click", () => {
+        document.getElementById("imageViewerContent").src = productImage.currentSrc || productImage.src;
+        imageViewer.classList.add("open");
+        document.body.style.overflow = "hidden";
+    });
+    function closeProductImage() {
+        imageViewer.classList.remove("open");
+        document.body.style.overflow = "";
+    }
+    imageViewer.addEventListener("click", event => { if (event.target === imageViewer) closeProductImage(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") closeProductImage(); });
 </script>
 
 </body>

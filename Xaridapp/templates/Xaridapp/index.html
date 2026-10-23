@@ -475,6 +475,11 @@
             gap: 14px;
         }
 
+        .product-filters { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:-5px 0 16px; }
+        .product-filters select, .product-filters label { min-height:40px; border:1px solid #e5e3ea; border-radius:9px; background:#fff; padding:8px 12px; color:#333; font:inherit; font-size:13px; }
+        .product-filters label { display:flex; align-items:center; gap:8px; }
+        .product-filters button { min-height:40px; border:0; border-radius:9px; background:#7000ff; color:#fff; padding:0 16px; font-weight:700; cursor:pointer; }
+
         /* =========================================
            PRODUCT CARD
         ========================================= */
@@ -555,6 +560,8 @@
             justify-content: center;
             font-size: 13px;
             font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
             transition: 0.2s ease;
         }
 
@@ -1263,6 +1270,21 @@
 
     </div>
 
+    <form class="product-filters" method="get" action="{% url 'index' %}">
+        {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+        <label for="product-sort">Saralash
+            <select name="sort" id="product-sort">
+                <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Yangi qo‘shilgan</option>
+                <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Arzonidan</option>
+                <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Qimmatidan</option>
+                <option value="name" {% if sort == 'name' %}selected{% endif %}>Nomi bo‘yicha</option>
+            </select>
+        </label>
+        <label><input type="checkbox" name="available" value="1" {% if available_only %}checked{% endif %}> Faqat mavjud</label>
+        <button type="submit">Qo‘llash</button>
+        <a href="{% url 'order_tracking' %}" style="color:#7000ff;font-weight:700;padding:8px;">Buyurtmani kuzatish</a>
+    </form>
+
 
     <!-- =================================================
          PRODUCTS
@@ -1292,6 +1314,8 @@
                                     <img
                                         src="{{ product.image.url }}"
                                         alt="{{ product.name }}"
+                                        loading="lazy"
+                                        decoding="async"
                                     >
 
                                 {% else %}
@@ -1333,15 +1357,23 @@
                             {{ product.price }} so'm
                         </div>
 
+                        {% if product.stock < 1 or not product.is_available %}
+                            <div class="small text-danger mb-2">Hozircha mavjud emas</div>
+                        {% else %}
+                            <div class="small text-muted mb-2">Omborda {{ product.stock }} dona</div>
+                        {% endif %}
 
-                        <a
-                            href="{% url 'add_to_cart' product.id %}"
-                            class="btn-cart"
-                            onclick="event.stopPropagation();"
-                        >
-                            <i class="fa-solid fa-cart-plus me-2"></i>
-                            Savatga qo'shish
-                        </a>
+
+                        {% if product.stock > 0 and product.is_available %}
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-cart" onclick="event.stopPropagation();">
+                                    <i class="fa-solid fa-cart-plus me-2"></i> Savatga qo‘shish
+                                </button>
+                            </form>
+                        {% else %}
+                            <button type="button" class="btn-cart" disabled style="opacity:.5;cursor:not-allowed;">Mavjud emas</button>
+                        {% endif %}
 
                     </div>
 

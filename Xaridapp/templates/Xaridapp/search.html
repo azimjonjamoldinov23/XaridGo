@@ -101,6 +101,18 @@
         </form>
     </div>
 
+    <form action="{% url 'search' %}" method="get" style="display:flex;gap:10px;flex-wrap:wrap;margin:-12px 0 20px;align-items:center;">
+        <input type="hidden" name="q" value="{{ query }}">
+        <select name="sort" aria-label="Saralash" style="padding:10px;border:1px solid #ddd;border-radius:8px;">
+            <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Yangi qo‘shilgan</option>
+            <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Arzonidan</option>
+            <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Qimmatidan</option>
+            <option value="name" {% if sort == 'name' %}selected{% endif %}>Nomi bo‘yicha</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" name="available" value="1" {% if available_only %}checked{% endif %}> Faqat mavjud</label>
+        <button type="submit" style="padding:10px 16px;background:#7000ff;color:white;border:0;border-radius:8px;">Saralash</button>
+    </form>
+
     <!-- Natijalar Sarlavhasi -->
     {% if query %}
         <h2 class="results-title">"{{ query }}" bo'yicha qidiruv natijalari:</h2>
@@ -114,7 +126,7 @@
                     <div>
                         <div class="image-wrapper">
                             {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" decoding="async">
                             {% else %}
                                 <span style="color: #aaa; font-size: 13px;">Rasm yo'q</span>
                             {% endif %}

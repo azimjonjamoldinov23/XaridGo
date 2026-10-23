@@ -98,6 +98,15 @@ class Product(models.Model):
         ordering = ["-created_at"]
 
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="gallery_images")
+    image = models.ImageField(upload_to="products/gallery/%Y/%m/%d")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+
+
 # ============================================================
 # ORDER
 # ============================================================
@@ -153,6 +162,8 @@ class Order(models.Model):
         verbose_name="Yaratilgan vaqt"
     )
 
+    inventory_restored = models.BooleanField(default=False)
+
     def __str__(self):
         ism = self.user.username if self.user else self.mijoz_nomi
         return f"Buyurtma #{self.id} - {ism}"
@@ -161,6 +172,17 @@ class Order(models.Model):
         verbose_name = "Buyurtma"
         verbose_name_plural = "Buyurtmalar"
         ordering = ["-yaratilgan_at"]
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name="order_items")
+    product_name = models.CharField(max_length=200)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.product_name} × {self.quantity} (#{self.order_id})"
 
 
 # ============================================================

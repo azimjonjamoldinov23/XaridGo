@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product, Order, Notification, UserProfile
+from .models import Category, Product, ProductImage, Order, OrderItem, Notification, UserProfile
 
 
 @admin.register(UserProfile)
@@ -30,8 +30,13 @@ class CategoryAdmin(admin.ModelAdmin):
 # PRODUCT
 # ============================================================
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 0
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
 
     list_display = (
         'name',
@@ -64,8 +69,15 @@ class ProductAdmin(admin.ModelAdmin):
 # ORDER
 # ============================================================
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ("product_name", "unit_price", "quantity")
+    can_delete = False
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemInline]
 
     list_display = (
         'id',
