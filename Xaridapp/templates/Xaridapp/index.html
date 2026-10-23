@@ -240,7 +240,7 @@
         .banner-content {
             position: relative;
             z-index: 5;
-            max-width: 55%;
+            max-width: 63%;
         }
 
         .badge-discount {
@@ -256,7 +256,7 @@
 
         .banner-title {
             color: white;
-            font-size: 53px;
+            font-size: 60px;
             line-height: 0.98;
             font-weight: 900;
             text-transform: uppercase;
@@ -295,11 +295,26 @@
             height: 100%;
             object-fit: contain;
             object-position: right center;
-            z-index: 1;
+            z-index: 2;
 
             /* Keep the full product image visible without cropping */
             mask-image: none;
             -webkit-mask-image: none;
+        }
+
+        .banner-img-backdrop {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 58%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: blur(18px) saturate(.85);
+            opacity: .55;
+            transform: scale(1.08);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* =========================================
@@ -616,10 +631,11 @@
             }
 
             .banner-title {
-                font-size: 43px;
+                font-size: 48px;
             }
 
-            .banner-img-right {
+            .banner-img-right,
+            .banner-img-backdrop {
                 width: 55%;
             }
         }
@@ -671,7 +687,7 @@
             }
 
             .banner-title {
-                font-size: 31px;
+                font-size: 34px;
                 letter-spacing: -0.7px;
             }
 
@@ -686,7 +702,8 @@
                 padding: 7px 10px;
             }
 
-            .banner-img-right {
+            .banner-img-right,
+            .banner-img-backdrop {
                 width: 75%;
                 opacity: 0.45;
             }
@@ -764,7 +781,7 @@
             }
 
             .banner-title {
-                font-size: 25px;
+                font-size: 28px;
             }
 
             .badge-discount {
@@ -776,7 +793,8 @@
                 display: none;
             }
 
-            .banner-img-right {
+            .banner-img-right,
+            .banner-img-backdrop {
                 width: 80%;
                 opacity: 0.35;
             }
@@ -1018,6 +1036,12 @@
 
                     <img
                         src="/media/products/2026/08/15/t_product_540_high_3.webp"
+                        class="banner-img-backdrop"
+                        alt=""
+                        aria-hidden="true"
+                    >
+                    <img
+                        src="/media/products/2026/08/15/t_product_540_high_3.webp"
                         class="banner-img-right"
                         alt="Yarko sunflower oil, 5 liters"
                         onerror="this.style.display='none';"
@@ -1068,6 +1092,12 @@
                     </div>
 
 
+                    <img
+                        src="/media/products/2026/08/15/t_product_540_high_2.webp"
+                        class="banner-img-backdrop"
+                        alt=""
+                        aria-hidden="true"
+                    >
                     <img
                         src="/media/products/2026/08/15/t_product_540_high_2.webp"
                         class="banner-img-right"
