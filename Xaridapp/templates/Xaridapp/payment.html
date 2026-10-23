@@ -41,7 +41,7 @@
         <span class="badge">● Paynet / Karta orqali to'lov</span>
         
         <div class="order-title">Buyurtma #{{ order.id }} uchun to'lov summasi:</div>
-        <div class="price">{{ order.total_price }} so'm</div>
+        <div class="price">{{ order.umumiy_narx }} so'm</div>
 
         <div class="credit-card">
             <div class="card-type">Paynet Virtual Card</div>
@@ -52,7 +52,7 @@
         <div class="instruction">
             <strong>To'lov qilish yo'riqnomasi:</strong>
             <ol>
-                <li>Yuqoridagi kartaga <b>{{ order.total_price }} so'm</b> o'tkazing.</li>
+                <li>Yuqoridagi kartaga <b>{{ order.umumiy_narx }} so'm</b> o'tkazing.</li>
                 <li>Paynet, Click yoki Payme ilovasidan foydalaning.</li>
                 <li>To'lov chekini Telegram orqali yuboring.</li>
             </ol>

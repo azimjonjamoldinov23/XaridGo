@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.http import require_POST
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.db.models import Q
 
-from .models import Product, Order, Notification
+from .models import Product, Order, Notification, UserProfile, Category
 from .forms import SignUpForm, CustomLoginForm
 
 
@@ -43,7 +47,8 @@ def product_detail_view(request, pk):
         request,
         "Xaridapp/product_detail.html",
         {
-            "product": product
+            "product": product,
+            "categories": Category.objects.all(),
         }
     )
 
@@ -58,6 +63,7 @@ def signup_view(request):
 
         if form.is_valid():
             user = form.save()
+            UserProfile.objects.get_or_create(user=user)
             login(request, user)
 
             return redirect("index")
@@ -87,7 +93,13 @@ def custom_login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-
+            next_url = request.POST.get("next") or request.GET.get("next")
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url,
+                allowed_hosts={request.get_host()},
+                require_https=request.is_secure(),
+            ):
+                return redirect(next_url)
             return redirect("index")
     else:
         form = CustomLoginForm()
@@ -107,9 +119,11 @@ def custom_login_view(request):
 
 @login_required
 def profile_view(request):
+    profile, _created = UserProfile.objects.get_or_create(user=request.user)
     return render(
         request,
-        "Xaridapp/profile.html"
+        "Xaridapp/profile.html",
+        {"profile": profile},
     )
 
 
@@ -119,28 +133,65 @@ def profile_view(request):
 
 @login_required
 def edit_profile(request):
+    profile, _created = UserProfile.objects.get_or_create(user=request.user)
+    values = {
+        "username": request.user.username,
+        "email": request.user.email,
+        "phone": profile.phone,
+        "age": profile.age or "",
+    }
+
     if request.method == "POST":
+        values.update({
+            "username": request.POST.get("username", "").strip(),
+            "email": request.POST.get("email", "").strip(),
+            "phone": request.POST.get("phone", "").strip(),
+            "age": request.POST.get("age", "").strip(),
+        })
+        error = None
+        age = None
 
-        username = request.POST.get(
-            "username",
-            ""
-        ).strip()
+        if not values["username"]:
+            error = "Foydalanuvchi nomini kiriting."
+        elif request.user.__class__.objects.exclude(pk=request.user.pk).filter(
+            username__iexact=values["username"]
+        ).exists():
+            error = "Bu foydalanuvchi nomi band."
+        elif values["email"]:
+            try:
+                validate_email(values["email"])
+            except ValidationError:
+                error = "Elektron pochta manzilini tekshiring."
 
-        email = request.POST.get(
-            "email",
-            ""
-        ).strip()
+        if error is None and len(values["phone"]) > 20:
+            error = "Telefon raqami 20 ta belgidan oshmasin."
+        elif error is None and values["age"]:
+            try:
+                age = int(values["age"])
+                if not 1 <= age <= 120:
+                    raise ValueError
+            except ValueError:
+                error = "Yoshni 1 dan 120 gacha kiriting."
 
-        request.user.username = username
-        request.user.email = email
+        if error:
+            return render(request, "Xaridapp/edit_profile.html", {
+                "profile": profile,
+                "values": values,
+                "error": error,
+            })
 
-        request.user.save()
-
+        request.user.username = values["username"]
+        request.user.email = values["email"]
+        request.user.save(update_fields=["username", "email"])
+        profile.phone = values["phone"]
+        profile.age = age
+        profile.save(update_fields=["phone", "age"])
         return redirect("profile")
 
     return render(
         request,
-        "Xaridapp/edit_profile.html"
+        "Xaridapp/edit_profile.html",
+        {"profile": profile, "values": values},
     )
 
 
@@ -323,7 +374,7 @@ def checkout_view(request):
             telefon_raqami=telefon_raqami,
             manzil=manzil,
             umumiy_narx=total_price,
-            maqom="To'lov kutilmoqda"
+            maqom="Kutilmoqda"
         )
 
         request.session["cart"] = {}
@@ -371,26 +422,13 @@ def payment_page_view(request, order_id):
 # PAYMENT SUCCESS
 # ============================================================
 
-@login_required
+@staff_member_required(login_url="admin_login")
+@require_POST
 def payment_success(request, order_id):
-
-    order = get_object_or_404(
-        Order,
-        id=order_id,
-        user=request.user
-    )
-
+    order = get_object_or_404(Order, id=order_id)
     order.maqom = "To'langan"
-    order.save()
-
-    Notification.objects.create(
-        user=request.user,
-        title="To'lov muvaffaqiyatli ✅",
-        message=f"#{order.id}-buyurtmangiz uchun to'lov qabul qilindi.",
-        notification_type="payment"
-    )
-
-    return redirect("orders")
+    order.save(update_fields=["maqom"])
+    return redirect("admin_order_detail", order_id=order.id)
 
 
 # ============================================================
@@ -526,11 +564,7 @@ def addresses(request):
 
 @login_required
 def payment(request):
-
-    return render(
-        request,
-        "Xaridapp/payment.html"
-    )
+    return redirect("orders")
 
 
 # ============================================================
@@ -654,47 +688,8 @@ def order_detail(request, pk):
 
 @login_required
 def create_order(request):
-
-    if request.method == "POST":
-
-        mijoz_nomi = request.POST.get(
-            "customer_name",
-            ""
-        ).strip()
-
-        telefon_raqami = request.POST.get(
-            "phone_number",
-            ""
-        ).strip()
-
-        manzil = request.POST.get(
-            "address",
-            ""
-        ).strip()
-
-        total_price = request.POST.get(
-            "total_price",
-            "0"
-        ).strip()
-
-        order = Order.objects.create(
-            user=request.user,
-            mijoz_nomi=mijoz_nomi,
-            telefon_raqami=telefon_raqami,
-            manzil=manzil,
-            umumiy_narx=total_price,
-            maqom="Kutilmoqda"
-        )
-
-        return redirect(
-            "payment_page",
-            order_id=order.id
-        )
-
-    return render(
-        request,
-        "Xaridapp/create_order.html"
-    )
+    # Legacy URL: checkout calculates and validates the order server-side.
+    return redirect("checkout")
 
 
 # ============================================================
@@ -759,13 +754,8 @@ def admin_login(request):
 # XARIDGO ADMIN PANEL
 # ============================================================
 
-@login_required
+@staff_member_required(login_url="admin_login")
 def admin_dashboard(request):
-
-    # Oddiy foydalanuvchi admin panelga kira olmaydi
-    if not request.user.is_staff:
-        return redirect("admin_login")
-
     orders = Order.objects.all().order_by(
         "-yaratilgan_at"
     )
@@ -814,6 +804,10 @@ def admin_dashboard(request):
         "paid_orders": paid_orders,
         "delivered_orders": delivered_orders,
         "cancelled_orders": cancelled_orders,
+        "product_count": products.count(),
+        "order_count": orders.count(),
+        "pending_count": pending_orders,
+        "delivered_count": delivered_orders,
 
         # Admin user
         "admin_user": request.user,
@@ -830,7 +824,7 @@ def admin_dashboard(request):
 # ADMIN LOGOUT
 # ============================================================
 
-@login_required
+@staff_member_required(login_url="admin_login")
 def admin_logout(request):
 
     logout(request)
@@ -842,7 +836,7 @@ def admin_logout(request):
 # ADMIN ORDERS
 # ============================================================
 
-@staff_member_required(login_url="/admin-login/")
+@staff_member_required(login_url="admin_login")
 def admin_orders(request):
 
     orders = Order.objects.all().order_by(
@@ -862,7 +856,7 @@ def admin_orders(request):
 # ADMIN ORDER DETAIL
 # ============================================================
 
-@staff_member_required(login_url="/admin-login/")
+@staff_member_required(login_url="admin_login")
 def admin_order_detail(request, order_id):
 
     order = get_object_or_404(
@@ -905,56 +899,15 @@ def admin_order_detail(request, order_id):
         }
     )
 
-from django.shortcuts import render
-from .models import Order, Product
-
-
-def admin_panel(request):
-    products_count = Product.objects.count()
-    orders_count = Order.objects.count()
-
-    pending_orders = Order.objects.filter(
-        status="Kutilmoqda"
-    ).count()
-
-    delivered_orders = Order.objects.filter(
-        status="Yetkazildi"
-    ).count()
-
-    orders = Order.objects.all().order_by("-created_at")[:10]
-
-    return render(request, "admin-panel.html", {
-        "products_count": products_count,
-        "orders_count": orders_count,
-        "pending_orders": pending_orders,
-        "delivered_orders": delivered_orders,
-        "orders": orders,
-    })
-
-
-def admin_orders(request):
-    if request.method == "POST":
-        order_id = request.POST.get("order_id")
-        maqom = request.POST.get("maqom")
-
-        order = get_object_or_404(Order, id=order_id)
-        order.maqom = maqom
-        order.save()
-
-        return redirect("admin_orders")
-
-    orders = Order.objects.all().order_by("-yaratilgan_at")
-
-    return render(request, "Xaridapp/orders.html", {
-        "orders": orders
-    })
+@staff_member_required(login_url="admin_login")
+@require_POST
 def order_status_update(request, order_id):
-    if request.method == "POST":
-        order = get_object_or_404(Order, id=order_id)
+    order = get_object_or_404(Order, id=order_id)
+    new_status = request.POST.get("maqom") or request.POST.get("status")
+    allowed_statuses = {value for value, _label in Order.STATUS_CHOICES}
 
-        new_status = request.POST.get("status")
+    if new_status in allowed_statuses:
+        order.maqom = new_status
+        order.save(update_fields=["maqom"])
 
-        order.status = new_status
-        order.save()
-
-    return redirect("admin_orders")
+    return redirect("admin_order_detail", order_id=order.id)

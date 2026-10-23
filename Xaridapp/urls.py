@@ -42,6 +42,5 @@ urlpatterns = [
     path("admin-panel/orders/", views.admin_orders, name="admin_orders"),
     path("admin-panel/orders/<int:order_id>/", views.admin_order_detail, name="admin_order_detail"),
     path("orders/", views.orders, name="orders"),
-    path("admin-panel/orders/",views.admin_orders,name="admin_orders"),
-    path("admin-panel/orders/status/<int:order_id>/",views.order_status_update,name="order_status_update"),
+    path("admin-panel/orders/status/<int:order_id>/", views.order_status_update, name="order_status_update"),
 ]

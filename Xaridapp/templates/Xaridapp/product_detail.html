@@ -1228,14 +1228,14 @@ input {
 
 
         <!-- CATALOG -->
-        <a href="#" class="catalog-button">
+        <a href="{% url 'index' %}" class="catalog-button">
             ☰
             <span>Katalog</span>
         </a>
 
 
         <!-- SEARCH -->
-        <form class="search-box" action="#" method="get">
+        <form class="search-box" action="{% url 'search' %}" method="get">
 
             <input
                 type="text"
@@ -1275,52 +1275,12 @@ input {
 <!-- ================= CATEGORY NAV ================= -->
 
 <nav class="category-nav">
-
     <div class="category-nav-inner">
-
-        <a href="#">
-            ☑ Arzon narxlar kafolati
-        </a>
-
-        <a href="#">
-            🛍 Onalar va bolalar uchun
-        </a>
-
-        <a href="#">
-            🎁 Maktab bozori
-        </a>
-
-        <a href="#">
-            🏖 Yozgi kolleksiya
-        </a>
-
-        <a href="#">
-           🛏 Mebel
-        </a>
-
-        <a href="#">
-            📌Turizm, baliq ovi va ovchilik
-        </a>
-
-        <a href="#">
-            💻Elektronika
-        </a>
-
-        <a href="#">
-            🔌Maishiy texnika
-        </a>
-
-        <a href="#">
-            
-        </a>
-
-        <a href="#">
-            Yangi
-        
-        </a>
-
+        <a href="{% url 'index' %}">Barcha mahsulotlar</a>
+        {% for category in categories %}
+            <a href="{% url 'index' %}?category={{ category.slug|urlencode }}">{{ category.name }}</a>
+        {% endfor %}
     </div>
-
 </nav>
 
 

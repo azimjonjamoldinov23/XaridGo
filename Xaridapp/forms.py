@@ -13,7 +13,6 @@ class SignUpForm(UserCreationForm):
                 'class': 'form-control'
             }
         ),
-        min_length=1,
         required=True
     )
 
@@ -25,7 +24,6 @@ class SignUpForm(UserCreationForm):
                 'class': 'form-control'
             }
         ),
-        min_length=1,
         required=True
     )
 
@@ -47,13 +45,6 @@ class SignUpForm(UserCreationForm):
             'placeholder': 'example@gmail.com',
             'class': 'form-control'
         })
-
-    def clean_password1(self):
-        password = self.cleaned_data.get('password1')
-
-        # Django'ning standart password validatorlarini o'tkazib yuboramiz
-        return password
-
 
 class CustomLoginForm(AuthenticationForm):
 

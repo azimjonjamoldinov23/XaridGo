@@ -848,6 +848,7 @@
     </div>
 
 
+    {% if user.is_staff %}
     <!-- ADMIN PANEL -->
 <a href="{% url 'admin_dashboard' %}" class="menu-item">
 
@@ -864,6 +865,7 @@
     </div>
 
 </a>
+    {% endif %}
 
 
     <!-- =================================================
