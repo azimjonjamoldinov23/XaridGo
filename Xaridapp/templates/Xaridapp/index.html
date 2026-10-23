@@ -218,23 +218,14 @@
         /* Uzumga yaqin birinchi banner */
         .banner-bg-1 {
             background:
-                linear-gradient(
-                    110deg,
-                    #7000ff 0%,
-                    #7900ff 42%,
-                    #12345b 43%,
-                    #0b223d 100%
-                );
+                radial-gradient(circle at 84% 24%, rgba(255, 226, 80, .22), transparent 18%),
+                linear-gradient(118deg, #5720d5 0%, #792bdf 46%, #a746d7 100%);
         }
 
         .banner-bg-2 {
             background:
-                linear-gradient(
-                    110deg,
-                    #17131f 0%,
-                    #2d164b 45%,
-                    #7000ff 100%
-                );
+                radial-gradient(circle at 82% 25%, rgba(255, 226, 80, .2), transparent 18%),
+                linear-gradient(118deg, #4319a4 0%, #7028c7 48%, #a13bc7 100%);
         }
 
         .banner-content {
@@ -289,31 +280,13 @@
 
         .banner-img-right {
             position: absolute;
-            right: 0;
-            top: 0;
-            width: 58%;
-            height: 100%;
-            object-fit: contain;
-            object-position: right center;
-            z-index: 2;
-
-            /* Keep the full product image visible without cropping */
-            mask-image: none;
-            -webkit-mask-image: none;
-        }
-
-        .banner-img-backdrop {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 58%;
-            height: 100%;
+            right: -2%;
+            top: -6%;
+            width: 72%;
+            height: 112%;
             object-fit: cover;
             object-position: center;
-            filter: blur(18px) saturate(.85);
-            opacity: .55;
-            transform: scale(1.08);
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
         }
 
@@ -641,9 +614,8 @@
                 font-size: 48px;
             }
 
-            .banner-img-right,
-            .banner-img-backdrop {
-                width: 55%;
+            .banner-img-right {
+                width: 64%;
             }
         }
 
@@ -709,9 +681,9 @@
                 padding: 7px 10px;
             }
 
-            .banner-img-right,
-            .banner-img-backdrop {
-                width: 75%;
+            .banner-img-right {
+                width: 79%;
+                right: -5%;
                 opacity: 0.45;
             }
 
@@ -800,9 +772,9 @@
                 display: none;
             }
 
-            .banner-img-right,
-            .banner-img-backdrop {
-                width: 80%;
+            .banner-img-right {
+                width: 88%;
+                right: -8%;
                 opacity: 0.35;
             }
 
@@ -1042,15 +1014,9 @@
 
 
                     <img
-                        src="/media/products/2026/08/15/t_product_540_high_3.webp"
-                        class="banner-img-backdrop"
-                        alt=""
-                        aria-hidden="true"
-                    >
-                    <img
-                        src="/media/products/2026/08/15/t_product_540_high_3.webp"
+                        src="{% static 'images/banners/haftalik-oziq-ovqat.svg' %}"
                         class="banner-img-right"
-                        alt="Yarko sunflower oil, 5 liters"
+                        alt="XaridGo haftalik oziq-ovqat mahsulotlari kollaji"
                         onerror="this.style.display='none';"
                     >
 
@@ -1100,15 +1066,9 @@
 
 
                     <img
-                        src="/media/products/2026/08/15/t_product_540_high_2.webp"
-                        class="banner-img-backdrop"
-                        alt=""
-                        aria-hidden="true"
-                    >
-                    <img
-                        src="/media/products/2026/08/15/t_product_540_high_2.webp"
+                        src="{% static 'images/banners/makaron-oilasi.svg' %}"
                         class="banner-img-right"
-                        alt="Oila Tanlovi qanotchalar makaroni"
+                        alt="XaridGo makaron va taom haftaligi"
                         onerror="this.style.display='none';"
                     >
 

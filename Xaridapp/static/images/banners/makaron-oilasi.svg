@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="plate" x1="683" y1="164" x2="1051" y2="551" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#eee8ff"/></linearGradient>
+    <linearGradient id="sauce" x1="724" y1="246" x2="1011" y2="501" gradientUnits="userSpaceOnUse"><stop stop-color="#ffce67"/><stop offset="1" stop-color="#f18a32"/></linearGradient>
+    <linearGradient id="pack" x1="524" y1="192" x2="708" y2="526" gradientUnits="userSpaceOnUse"><stop stop-color="#fff7dd"/><stop offset="1" stop-color="#f2c66d"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="15"/><feOffset dy="18"/><feColorMatrix values="0 0 0 0 0.18 0 0 0 0 0.03 0 0 0 0 0.28 0 0 0 .24 0"/><feBlend in="SourceGraphic"/></filter>
+  </defs>
+  <circle cx="899" cy="340" r="275" fill="#fff" fill-opacity=".10"/>
+  <circle cx="1065" cy="142" r="101" fill="#ffe34d"/>
+  <circle cx="1065" cy="142" r="77" fill="#fff0a1" fill-opacity=".65"/>
+  <path d="M698 540c-84-27-120-111-69-168 42-47 102-40 135 3 29 38 13 79-23 94-30 12-67-4-68-32" stroke="#fff" stroke-opacity=".34" stroke-width="10" stroke-linecap="round"/>
+  <g filter="url(#shadow)">
+    <!-- Large pasta bowl -->
+    <ellipse cx="871" cy="393" rx="233" ry="198" fill="url(#plate)"/>
+    <ellipse cx="871" cy="393" rx="190" ry="157" fill="#fff"/>
+    <ellipse cx="871" cy="390" rx="155" ry="123" fill="url(#sauce)"/>
+    <g stroke="#f8d98e" stroke-width="15" stroke-linecap="round">
+      <path d="M763 313c60 25 114 87 145 161"/><path d="M809 282c64 41 108 98 132 171"/><path d="M853 273c48 43 82 99 103 163"/><path d="M904 279c30 48 53 96 67 151"/>
+      <path d="M742 371c62 9 132 54 182 114"/><path d="M744 425c66-5 121 17 166 60"/>
+    </g>
+    <g fill="#e95346"><circle cx="796" cy="346" r="17"/><circle cx="930" cy="324" r="15"/><circle cx="897" cy="451" r="17"/><circle cx="830" cy="417" r="13"/></g>
+    <g fill="#43a85b"><path d="M830 302c-7-23 6-38 29-38-1 23-12 36-29 38Z"/><path d="M948 382c-7-23 6-38 29-38-1 23-12 36-29 38Z"/><path d="M854 472c-7-23 6-38 29-38-1 23-12 36-29 38Z"/></g>
+    <!-- Pasta bag -->
+    <path d="m523 192 122-20 84 49-11 277-184 25-30-45 19-286Z" fill="url(#pack)" stroke="#fff" stroke-width="9" stroke-linejoin="round"/>
+    <path d="m523 192 122-20 84 49-127 25-79-54Z" fill="#fff1c6"/>
+    <path d="M574 286c17-20 33-20 50 0v143c-17 20-33 20-50 0V286Zm63-10c17-20 33-20 50 0v143c-17 20-33 20-50 0V276Z" fill="#e4a849"/>
+    <path d="M555 249h134" stroke="#9a4ddb" stroke-width="10" stroke-linecap="round"/>
+    <text x="622" y="235" text-anchor="middle" fill="#6736ad" font-family="Arial,sans-serif" font-size="17" font-weight="800">MAKARON</text>
+    <text x="620" y="466" text-anchor="middle" fill="#7546ad" font-family="Arial,sans-serif" font-size="16" font-weight="800">400 g</text>
+    <!-- Basil / tomato -->
+    <circle cx="1038" cy="482" r="46" fill="#f34f50" stroke="#fff" stroke-width="8"/>
+    <path d="M1039 440c-5-18 8-29 25-28-1 18-11 28-25 28Z" fill="#42ad55"/>
+    <path d="M1090 306c-29-31-28-69 1-98 27 32 26 68-1 98Z" fill="#52ba61"/>
+    <path d="M1093 298c-4-34 9-57 40-68 3 34-10 57-40 68Z" fill="#3fa551"/>
+  </g>
+  <path d="m550 126 12 27 28 3-21 19 6 28-25-15-25 15 6-28-21-19 28-3 12-27Z" fill="#ffdf4a"/>
+  <path d="m1104 218 8 17 19 2-14 12 4 19-17-10-17 10 4-19-14-12 19-2 8-17Z" fill="#fff" fill-opacity=".9"/>
+  <circle cx="693" cy="126" r="8" fill="#fff"/><circle cx="1097" cy="562" r="9" fill="#ffdf4a"/><circle cx="1003" cy="191" r="7" fill="#fff"/>
+</svg>
